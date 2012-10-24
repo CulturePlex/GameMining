@@ -27,13 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">{{ PROJECT_NAME }}</a>
+          <a class="brand" href="#">Game Mining</a>
         </div>
       </div>
   </div>
 
-  <div class="controlpanel">
-      <h2>Get a Graph!</h2>
+  <div class="hero-unit">
+      <h2>Step 1: Get a Graph!</h2>
       <div>
       <label for="gexf-file">Import GEXF</label>
       <input type="file" id="files" name="files[]" multiple="">
@@ -53,7 +53,7 @@
       <button type="button" id="extract-fb">Extract Graph</button>
       </div>
   </div>
-  <div class="controlpanel">
+  <div class="hero-unit">
       <h2>Create Quiz!</h2>
       <button type="button" id="create-quiz">Create Quiz form CulturePlex-Graphs!</button>
       <button type="button" id="create-quiz-fb">Create Quiz form FreeBase-Graphs!</button>
@@ -62,12 +62,5 @@
       <div class="quizViewer">
       </div>
   </div>
-  <canvas id="graphcanvas" tabindex="0" width="900" height="800" style="image-rendering: -webkit-optimize-contrast !important; "></canvas>
 
-  <div class="row cells-1 graph_nodes " style="display: none; "><div><div class="column span-4"><label for="id_graph_nodes" class="required">Nodes:</label></div><div class="column span-flexible"><textarea id="id_graph_nodes" rows="10" cols="40" name="graph_nodes">{}</textarea></div></div></div>
-
-  <div class="row cells-1 graph_edges " style="display: none; "><div><div class="column span-4"><label for="id_graph_edges" class="required">Relationships:</label></div><div class="column span-flexible"><textarea id="id_graph_edges" rows="10" cols="40" name="graph_edges">[]</textarea></div></div></div>
-
-  <table><tbody><tr><td><h4>Nodes</h4><ul id="node-list"></ul></td><td><h4>Edges</h4><ol id="edge-list"></ol></td><td></td></tr></tbody></table>
-  </div>
 </body>
