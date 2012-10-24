@@ -54,7 +54,7 @@
       </div>
   </div>
   <div class="hero-unit">
-      <h2>Create Quiz!</h2>
+      <h2>Step 2: Create Quiz!</h2>
       <button type="button" id="create-quiz">Create Quiz form CulturePlex-Graphs!</button>
       <button type="button" id="create-quiz-fb">Create Quiz form FreeBase-Graphs!</button>
       <button type="button" id="hide-canvas">Hide Graph</button>
