@@ -1,0 +1,35 @@
+.graph-editor {
+  margin-left:15px;
+}
+
+div.controlpanel {
+  background-color: #D6E7FD;
+  500px;
+}
+
+div#activityWidget {
+  background-color: #D6E7FD;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 800px;
+}
+
+span.constraints {
+  font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+ol#constraint-list {
+  width: 300px;
+  padding-bottom: 20px;
+}
+
+.actions li.delete-link {
+  text-decoration: none;
+}
+
+li.item {
+  clear: right;
+}
