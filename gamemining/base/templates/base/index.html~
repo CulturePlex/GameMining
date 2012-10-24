@@ -7,8 +7,6 @@
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphExtractor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/QuizConstructor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/mining.js"></script>
-    <script src="{{ STATIC_PREFIX }}js/bootstrap-dropdown.js"></script>
-    <script src="{{ STATIC_PREFIX }}js/bootstrap-collapse.js"></script>
 {% endblock %}
 
 {% block extra_links %}
