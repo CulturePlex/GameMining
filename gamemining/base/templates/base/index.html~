@@ -7,7 +7,7 @@
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphExtractor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/QuizConstructor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/mining.js"></script>
-     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/Neo4js/neo4j/Web.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/Neo4js/neo4js.js"></script>
      
 {% endblock %}
 
