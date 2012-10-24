@@ -1,7 +1,13 @@
 .gitignore
+.gitignore~
+lock
+rrd
 *.log
 *.pot
 *.pyc
 *.v0
 *.v1
+*.1
+*.lock
+*.lck
 local_settings.py
