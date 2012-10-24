@@ -1,0 +1,177 @@
+.dashboard-chats .button,.dashboard-chats .disabled {
+    position: relative;
+    float: right;
+    margin-top: 3px;
+}
+
+.chat-list,.instance-list {
+    padding-bottom: 10px;
+}
+
+.chat-item {
+    padding-bottom: 60px;
+}
+
+.chat-title {
+    background: transparent url(../img/chat-icon-16.png) 2px center no-repeat;
+    font-size: 120%;
+    padding: 5px 5px 2px 20px;
+    height: 20px;
+    display: block;
+}
+
+.chat-description {
+    font-style: italic;
+    font-family: Georgia;
+}
+
+.chat-dates {
+    font-style: italic;
+    font-family: Georgia;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: right;
+    display: block;
+}
+
+
+
+/* Dashboard Graphs */
+.graph-list,.instance-list {
+    padding-bottom: 10px;
+}
+
+.graph-item {
+    padding-bottom: 60px;
+}
+
+.graph-title {
+    background: transparent url(../img/55-network_16.png) 2px center no-repeat;
+    font-size: 120%;
+    padding: 5px 5px 2px 20px;
+    height: 20px;
+    display: block;
+}
+
+.graph-instance {
+    background: transparent url(../img/database_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+
+.graph-schema {
+    background: transparent url(../img/connected_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-total {
+    background: transparent url(../img/connections_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-nodes {
+    background: transparent url(../img/nodes_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-relationships {
+    background: transparent url(../img/connections_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-visibility {
+    background: transparent url(../img/eye_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-collaborators {
+    background: transparent url(../img/agent_16.png) left center no-repeat;
+    padding: 1px 5px 1px 16px;
+    height: 16px;
+    display: block;
+    margin-left: 10px;
+}
+
+.graph-description {
+    font-style: italic;
+    font-family: Georgia;
+}
+
+.dashboard-graphs .button,.dashboard-graphs .disabled {
+    position: relative;
+    float: right;
+    margin-top: 3px;
+}
+
+/* Dashboard graph flags */
+.flags {
+    /*  width:992px;*/
+    /*  background:#1D5600;*/
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+}
+
+.flags p {
+    text-align:justify;
+    padding-bottom:10px;
+}
+
+.flags-block {
+    width: 49%;
+    float:left;
+}
+
+.flags-block p {
+    width: 100%; 
+    float:left;
+    text-align:left;
+}
+
+/* three column area, vertical dotted divider */
+.flags-divider {
+    background: url(../img/content-divider.gif) no-repeat top center;
+    width: 1px;
+    min-height: 40px;
+    float: left;
+    padding: 15px 2px 0px 2px;
+}
+
+.green {
+    background-color: #d7ffd3
+}
+
+.red {
+    background-color: #FFFACD
+}
+
+.blue {
+    background-color: #CCCCFF
+}
+
+.x-button {
+    top: -15px;
+    position: absolute;
+    right: -15px;
+}
+
+

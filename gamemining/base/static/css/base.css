@@ -1,0 +1,52 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+.sidebar-nav {
+    padding: 9px 0;
+}
+ul.errorlist {
+    color: red;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 4px;
+    list-style-type: none;
+}
+
+ul.errorlist + input {
+  color: #b94a48;
+  border-color: #b94a48;
+}
+
+ul.errorlist + input, ul.errorlist + select, ul.errorlist + textarea {
+  color: #b94a48;
+  border-color: #b94a48;
+}
+
+ul.errorlist + input:focus, ul.errorlist + select:focus, .ul.errorlist + textarea:focus {
+  border-color: #953b39;
+  -webkit-box-shadow: 0 0 6px #d59392;
+  -moz-box-shadow: 0 0 6px #d59392;
+  box-shadow: 0 0 6px #d59392;
+}
+
+.textinnavbar
+{
+    float: none;
+    padding: 10px 10px 11px;
+    line-height: 19px;
+    color: white;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.box {
+    height: 140px;
+    position: relative;
+}
+
+.buttoninbox {
+    position:absolute;
+    bottom:19px;
+}
+

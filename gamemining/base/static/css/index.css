@@ -1,0 +1,59 @@
+.promo {
+  background-color: #eeeeee;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  min-height: 400px; 
+  padding-top:20px;
+}
+
+.promo h1{
+  margin: 30px 0 30px 0;
+  text-align: center;
+}
+
+.signxx {
+  text-align: center;
+  padding: 10px;
+  min-height: 400px; 
+  background-color: #eeeeee;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+.signxx label{
+  text-align: left;
+}
+
+.signxx h2{
+  margin: 5px 0;
+}
+
+.signxx label[for="id_remember_me"] {
+  display: inline;
+}
+
+#signup{
+  display:none;
+}
+
+.promochat h2{
+  color: white;
+  font-size: 18px;
+}
+
+.promochat{
+
+}
+
+.promochat .icon-comment{
+  float: right;
+}
+
+.scenario-button{
+    float: left;
+    width: 46%;
+    display: block;
+    margin: 0 2%;
+}
