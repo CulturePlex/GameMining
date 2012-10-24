@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block extra_links %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}css/relationalAdmin.css" />
     <link href="{{ STATIC_PREFIX }}css/base.css" rel="stylesheet">
     <link href="{{ STATIC_PREFIX }}css/bootstrap.css" rel="stylesheet">
     <link href="{{ STATIC_PREFIX }}css/bootstrap-responsive.css" rel="stylesheet">
@@ -18,59 +17,57 @@
 
 
 
-{% block title %}
-{% trans "Game Mining" %}
-{% endblock %}
+<body>
+<div class="container">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">{{ PROJECT_NAME }}</a>
+        </div>
+      </div>
+  </div>
 
-{% block content_title %}
-<h1>{% trans "Game Mining" %}</h1>
-{% endblock %}
+  <div class="controlpanel">
+      <h2>Get a Graph!</h2>
+      <div>
+      <label for="gexf-file">Import GEXF</label>
+      <input type="file" id="files" name="files[]" multiple="">
+      </div>
+      <div>
+      <label>...Or Extract from FreeBase</label>
+      <input type="text" id="query" >
+      <button type="button" id="search-fb">Search</button>
+      </div>
+      <div>
+      <label>Select Type:</label>
+      <select name="type" id="type_select_from">
+      </select>
+      </div>
+      <div>
+      <label>...Extract!</label>
+      <button type="button" id="extract-fb">Extract Graph</button>
+      </div>
+  </div>
+  <div class="controlpanel">
+      <h2>Create Quiz!</h2>
+      <button type="button" id="create-quiz">Create Quiz form CulturePlex-Graphs!</button>
+      <button type="button" id="create-quiz-fb">Create Quiz form FreeBase-Graphs!</button>
+      <button type="button" id="hide-canvas">Hide Graph</button>
+      <button type="button" id="show-canvas">Show Graph</button>
+      <div class="quizViewer">
+      </div>
+  </div>
+  <canvas id="graphcanvas" tabindex="0" width="900" height="800" style="image-rendering: -webkit-optimize-contrast !important; "></canvas>
 
-{% block main_navigation %}
+  <div class="row cells-1 graph_nodes " style="display: none; "><div><div class="column span-4"><label for="id_graph_nodes" class="required">Nodes:</label></div><div class="column span-flexible"><textarea id="id_graph_nodes" rows="10" cols="40" name="graph_nodes">{}</textarea></div></div></div>
 
-{% endblock %}
+  <div class="row cells-1 graph_edges " style="display: none; "><div><div class="column span-4"><label for="id_graph_edges" class="required">Relationships:</label></div><div class="column span-flexible"><textarea id="id_graph_edges" rows="10" cols="40" name="graph_edges">[]</textarea></div></div></div>
 
-{% block navigation_buttons %}
-
-{% endblock %}
-
-{% block content %}
-
-<div class="controlpanel">
-    <h2>Get a Graph!</h2>
-    <div>
-    <label for="gexf-file">Import GEXF</label>
-    <input type="file" id="files" name="files[]" multiple="">
-    </div>
-    <div>
-    <label>...Or Extract from FreeBase</label>
-    <input type="text" id="query" >
-    <button type="button" id="search-fb">Search</button>
-    </div>
-    <div>
-    <label>Select Type:</label>
-    <select name="type" id="type_select_from">
-    </select>
-    </div>
-    <div>
-    <label>...Extract!</label>
-    <button type="button" id="extract-fb">Extract Graph</button>
-    </div>
-</div>
-<div class="controlpanel">
-    <h2>Create Quiz!</h2>
-    <button type="button" id="create-quiz">Create Quiz form CulturePlex-Graphs!</button>
-    <button type="button" id="create-quiz-fb">Create Quiz form FreeBase-Graphs!</button>
-    <button type="button" id="hide-canvas">Hide Graph</button>
-    <button type="button" id="show-canvas">Show Graph</button>
-    <div class="quizViewer">
-    </div>
-</div>
-<canvas id="graphcanvas" tabindex="0" width="900" height="800" style="image-rendering: -webkit-optimize-contrast !important; "></canvas>
-
-<div class="row cells-1 graph_nodes " style="display: none; "><div><div class="column span-4"><label for="id_graph_nodes" class="required">Nodes:</label></div><div class="column span-flexible"><textarea id="id_graph_nodes" rows="10" cols="40" name="graph_nodes">{}</textarea></div></div></div>
-
-<div class="row cells-1 graph_edges " style="display: none; "><div><div class="column span-4"><label for="id_graph_edges" class="required">Relationships:</label></div><div class="column span-flexible"><textarea id="id_graph_edges" rows="10" cols="40" name="graph_edges">[]</textarea></div></div></div>
-
-<table><tbody><tr><td><h4>Nodes</h4><ul id="node-list"></ul></td><td><h4>Edges</h4><ol id="edge-list"></ol></td><td></td></tr></tbody></table>
-{% endblock %}
+  <table><tbody><tr><td><h4>Nodes</h4><ul id="node-list"></ul></td><td><h4>Edges</h4><ol id="edge-list"></ol></td><td></td></tr></tbody></table>
+  </div>
+</body>
