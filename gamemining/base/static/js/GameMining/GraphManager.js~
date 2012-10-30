@@ -1,0 +1,8 @@
+var GraphManager = {
+  //Freebase Extractor Variables:
+  graph: ,
+  init: function () {
+    GraphManager.graph = new neo4j.GraphDatabase("http://localhost:7474/");
+  },
+};
+
