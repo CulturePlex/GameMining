@@ -12,3 +12,4 @@ rrd
 *.lck
 local_settings.py
 venv
+neo4j-community-1.8/*
