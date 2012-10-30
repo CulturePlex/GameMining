@@ -56,7 +56,7 @@ var GraphExtractor = {
             }
           }
         }
-      });
+    });
   }
 };
 

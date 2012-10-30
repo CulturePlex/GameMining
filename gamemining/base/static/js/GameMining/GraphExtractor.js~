@@ -34,29 +34,29 @@ var GraphExtractor = {
     });
   },
   setGraph: function (result) {
-  GraphManager.init();
-  var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
-  var node;
-  $.each(result, function (k, v) {
-      if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
-      {
-        if (v instanceof Array)
+    GraphManager.init();
+    var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
+    var node;
+    $.each(result, function (k, v) {
+        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
         {
-          for (var obj in v)
+          if (v instanceof Array)
           {
-            node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
-            GraphManager.graph.rel(origin, k , node);
-          }
-        } else
-        {
-          if (v != null)
+            for (var obj in v)
+            {
+              node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
+              GraphManager.graph.rel(origin, k , node);
+            }
+          } else
           {
-            node = GraphManager.graph.node({ "name" : v , "type" : k});
-            GraphManager.graph.rel(origin, k , node);
+            if (v != null)
+            {
+              node = GraphManager.graph.node({ "name" : v , "type" : k});
+              GraphManager.graph.rel(origin, k , node);
+            }
           }
         }
-      }
-    });
+      });
   }
 };
 

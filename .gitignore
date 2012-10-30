@@ -11,3 +11,4 @@ rrd
 *.lock
 *.lck
 local_settings.py
+venv
