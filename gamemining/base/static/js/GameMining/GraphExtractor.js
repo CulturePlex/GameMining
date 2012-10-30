@@ -1,16 +1,3 @@
-/*jshint
-    forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:false,
-    undef:true, curly:true, browser:true, indent:2, maxerr:50 noempty:false
-*/
-
-/*global
-    jQuery $ GraphEditor
-*/
-
-
-if (typeof($) === "undefined") {
-  $ = django.jQuery;
-}
 var GraphExtractor = {
   //Freebase Extractor Variables:
   name: "",
@@ -47,55 +34,29 @@ var GraphExtractor = {
     });
   },
   setGraph: function (result) {
-
-    GraphEditor.addNode(result.name, {type: GraphExtractor.type , score: 0}, "FREEBASEGRAPH");
+    GraphManager.init();
+    var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
+    var node;
     $.each(result, function (k, v) {
-
-      if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
-      {
-        if (v instanceof Array)
+        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
         {
-
-          for (var obj in v)
+          if (v instanceof Array)
           {
-            GraphEditor.addNode(v[obj], {type:k, score: 0});
-          }
-        } else
-        {
-          if (v != null)
+            for (var obj in v)
+            {
+              node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
+              GraphManager.graph.rel(origin, k , node);
+            }
+          } else
           {
-            GraphEditor.addNode(v, {type: k, score: 0}, "FREEBASEGRAPH");
+            if (v != null)
+            {
+              node = GraphManager.graph.node({ "name" : v , "type" : k});
+              GraphManager.graph.rel(origin, k , node);
+            }
           }
         }
-        
-      }
-      
-    });
-
-    $.each(result, function (k, v) {
-      console.log(k);
-      //Lo siguiente hay que hacerlo pero hay que avolir también los respectivos nodos
-      if(k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
-      {
-        if (v instanceof Array)
-        {
-          for (var obj in v)
-          {
-              GraphEditor.addEdge(result.name, k, v[obj], {inverse: "inverse of" + k});
-          }
-        } else
-        {
-          if (v != null && k != null)
-          {
-            GraphEditor.addEdge(result.name, k, v, {inverse: "inverse of" + k});
-          }
-        }
-      }
-    });
-    //When you call this function nodes and edges list is shown 
-    
-    //GraphEditor.progressBar.hide();
-    
+      });
   }
 };
 

@@ -17,7 +17,6 @@ $(document).ready(function(){
   $('#create-quiz-fb').click(function(){
     QuizConstructor.createQuiz("FREEBASE_GRAPH")
   });
-
-
+  
+  GraphManager.init();
 });
-
