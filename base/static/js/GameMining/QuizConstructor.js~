@@ -30,10 +30,10 @@ var QuizConstructor = {
             top = parseInt(Math.random(10)*QuizConstructor.edges.length);
         }
     }
-    
+    /*
     //Adding question and correct answer
     attrib = QuizConstructor.edges[top].type;
-    /*value = QuizConstructor.edges[top].target;
+    value = QuizConstructor.edges[top].target;
     correct = QuizConstructor.edges[top].source;
     
     var counter = 0;
