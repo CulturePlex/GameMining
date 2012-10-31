@@ -45,6 +45,7 @@ var GraphExtractor = {
             for (var obj in v)
             {
               node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
+              console.log(node);
               GraphManager.graph.rel(origin, k , node);
             }
           } else
