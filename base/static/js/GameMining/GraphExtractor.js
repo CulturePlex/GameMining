@@ -53,7 +53,7 @@ var GraphExtractor = {
             if (v != null)
             {
               node = GraphManager.graph.node({ "name" : v , "type" : k});
-              GraphManager.graph.rel(origin, k , node);
+              GraphManager.graph.rel(origin, {"name" : k }, node);
             }
           }
         }

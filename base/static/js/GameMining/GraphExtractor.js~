@@ -34,9 +34,24 @@ var GraphExtractor = {
     });
   },
   setGraph: function (result) {
-    GraphManager.init();
-    var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
-    var node;
+  
+$.ajax({
+  type: 'POST',
+  url: GraphManager.HOST + "db/data/index/node/",
+  data: {
+      "name" : "caca"
+    },
+  success:function (response, opts) {
+        console.log(response);
+        console.log(opts);
+    },
+  dataType: 'Content-Type:application/json'
+});  
+
+
+
+    //var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
+/*    var node;
     $.each(result, function (k, v) {
         if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
         {
@@ -45,6 +60,7 @@ var GraphExtractor = {
             for (var obj in v)
             {
               node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
+              console.log(node);
               GraphManager.graph.rel(origin, k , node);
             }
           } else
@@ -52,11 +68,11 @@ var GraphExtractor = {
             if (v != null)
             {
               node = GraphManager.graph.node({ "name" : v , "type" : k});
-              GraphManager.graph.rel(origin, k , node);
+              GraphManager.graph.rel(origin, {"name" : k } , node);
             }
           }
         }
-    });
+    });*/
   }
 };
 
