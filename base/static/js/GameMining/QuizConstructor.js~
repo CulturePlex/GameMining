@@ -1,18 +1,27 @@
 var QuizConstructor = {
   edges : null,
+  attrib : null,
+  value: null,
   createQuiz: function(graph_type){
-    var attrib;
-    var value;
     var correct;
-    
-    GraphManager.graph.getAvailableRelationshipTypes().then(function(a){QuizConstructor.edges = a});
-//    GraphManager.graph.getAvailableRelationshipTypes().then(function(a){QuizConstructor.edges = a});
+    var jumping = 4;
+    jQuery.ajax({
+      url: GraphManager.HOST + "db/data/relationship/" + jumping,
+      success: function(response){
+        QuizConstructor.attrib = response.type;
+  },
+  failure : function () {
+        console.log('fallo');
+        //Ext.Viewport.setMasked(false);
+        //Ext.Msg.alert(i18n.gettext('Unable to install'), i18n.gettext('Try again later'), Ext.emptyFn);
+    }
+    });
 /*    var edges = GraphEditor.getGraphEdgesJSON();
     var nodes = GraphEditor.getGraphNodesJSON();
 */
     var answers=[];
 
-    var top = parseInt(Math.random(10)*QuizConstructor.edges.length);
+/*    var top = parseInt(Math.random(10)*QuizConstructor.edges.length);
     if(graph_type == "FREEBASE_GRAPH")
     {
         console.log('_'+QuizConstructor.edges[top].replace(/\(.+\)/,'')+'_');
@@ -30,10 +39,10 @@ var QuizConstructor = {
             top = parseInt(Math.random(10)*QuizConstructor.edges.length);
         }
     }
-    /*
+    */
     //Adding question and correct answer
     attrib = QuizConstructor.edges[top].type;
-    value = QuizConstructor.edges[top].target;
+    /*value = QuizConstructor.edges[top].target;
     correct = QuizConstructor.edges[top].source;
     
     var counter = 0;

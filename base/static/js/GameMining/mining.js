@@ -1,5 +1,6 @@
 $(document).ready(function(){
   GraphExtractor.init();
+  GraphManager.init();
   $(".chzn-select").chosen();
 
   $('#search-fb').click(function(){

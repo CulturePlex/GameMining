@@ -18,5 +18,5 @@ $(document).ready(function(){
     QuizConstructor.createQuiz("FREEBASE_GRAPH")
   });
   
-  GraphManager.init();
+  
 });
