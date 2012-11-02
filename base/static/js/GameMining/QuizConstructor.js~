@@ -6,17 +6,16 @@ var QuizConstructor = {
   answers: null,
   end:null,
   start:null,
-  numberOfRels: 1347,
+  numberOfRels: 157,
   counter: 0,
   choices: 4,
   getAnswer: function(ind) {
-     console.log('entrado a get anser:'+ind);
      var jumpingTemp = Math.floor(Math.random()*QuizConstructor.numberOfRels);
      jQuery.ajax({
          url: GraphManager.HOST + "db/data/relationship/" + jumpingTemp,
          success: function(response){
-           if (response.type === QuizConstructor.attrib)
-           {
+//           if (response.type === QuizConstructor.attrib)
+//           {
               jQuery.ajax({
                  url: response.start,
                  success: function(response){
@@ -24,19 +23,16 @@ var QuizConstructor = {
                     QuizConstructor.counter++;
                     if(QuizConstructor.counter < QuizConstructor.choices - 1)
                     {
-                    console.log(QuizConstructor.counter);
-                    console.log('acabado sin full:'+ind);
                     }else
                     {
-                    console.log('bye');
-                    QuizConstructor.setQuiz();
+                    QuizConstructor.setQuiz("FREEBASE_GRAPH");
                     }
                  },
                  failed: function() {
                        console.log('*************************ERROR***********************');
                  }
               });
-            }
+//            }
           },
           failed: function() {
                console.log('*************************ERROR***********************');
@@ -53,26 +49,24 @@ var QuizConstructor = {
       QuizConstructor.answers=[];
       //Adding question and correct answer
       QuizConstructor.attrib = QuizConstructor.relationship.type;
-      console.log(QuizConstructor.relationship);
       
       jQuery.ajax({
         url: QuizConstructor.relationship.end,
         success: function(response){
           QuizConstructor.end = response;
-          console.log(QuizConstructor.end);
           QuizConstructor.answers=[];
           
           QuizConstructor.value = QuizConstructor.end.data.name;
           jQuery.ajax({
             url: QuizConstructor.relationship.start,
             success: function(response){
-              console.log(response);
               QuizConstructor.start = response;
               QuizConstructor.correct = QuizConstructor.start.data.name;
               QuizConstructor.counter = 0;
-              QuizConstructor.answers[3] = QuizConstructor.correct;
+              console.log(QuizConstructor.correct);
+              QuizConstructor.answers[0] = QuizConstructor.correct;
               //Adding incorrect answers
-              for(var i=0;i<QuizConstructor.choices;i++)
+              for(var i=1;i<QuizConstructor.choices;i++)
               {
                   QuizConstructor.getAnswer(i);
               }
@@ -93,17 +87,16 @@ var QuizConstructor = {
   setQuiz: function(graph_type){
               if(graph_type == "FREEBASE_GRAPH")
               {
-                  var question = 'Which of the followings has ' + QuizConstructor.value +' as ' + QuizConstructor.attrib +'?';
+                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib +'?';
               }
               if(graph_type == "CULTUREPLEX_GRAPH")
               {
-                  var question = 'Which of the following is ' + attrib + ' ' + value +'?';
+                  var question = 'Which of the following is <em>' + attrib + '</em> ' + value +'?';
               }
-              var quiz = '<div>' + 'Quiestion: ' + question + '</div>';
+              var quiz = '<h>' + question + '</h2>';
               
               //Deleting duplicated answers
               var j = 0;
-              console.log(QuizConstructor.answers);
               while ( j < QuizConstructor.answers.length )
               {
                   if ($.inArray(QuizConstructor.answers[j], QuizConstructor.answers)!== j)
@@ -117,7 +110,6 @@ var QuizConstructor = {
               
               //Mixing answers
               var answersmixed = [];
-              console.log(QuizConstructor.answers);
               j = 0;
               while ( j < QuizConstructor.answers.length )
               {
@@ -128,16 +120,41 @@ var QuizConstructor = {
                       j++;
                   }
               }
-              
+              for (var i = 0 ; i < 4; i++)
+              {
+                  $('#answer'+i).removeClass("btn-success");
+                  $('#answer'+i).removeClass("btn-danger");
+                  
+                  $('#answer'+i).hide();
+              }
               for (var i = 0 ; i < QuizConstructor.answers.length; i++)
               {
-                  quiz += '<div>' + 'Answer ' + i + ': ' + answersmixed[i] + '</div>';
+                  $('#answer'+i).html(answersmixed[i]);
+                  $('#answer'+i).show();
               }
               
               
-              quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
+              //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
               $('.quizViewer').empty();
               $('.quizViewer').append(quiz);
+  },
+  checkAnswer: function(i) {
+    console.log(QuizConstructor.correct);
+    console.log($('#answer'+i).html());
+    if($('#answer'+i).html() === QuizConstructor.correct)
+    {
+        $('#answer'+i).addClass("btn-success");
+    }
+    else
+    {
+        $('#answer'+i).addClass("btn-danger");
+    }
+    setTimeout(function(){
+        QuizConstructor.createQuiz();
+    },100);
+
+
+  
   }
 }
 
