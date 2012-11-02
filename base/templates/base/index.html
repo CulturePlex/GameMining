@@ -34,32 +34,30 @@
       </div>
   </div>
 
-  <div class="hero-unit">
-      <h2>Step 1: Get a Graph!</h2>
-      <div>
-      <label for="gexf-file">Import GEXF</label>
-      <input type="file" id="files" name="files[]" multiple="">
+  <div>
+      <div id="one" class="span3 box well">
+          <h2>Generate a Quiz about:</h2>
+          <input type="text" id="query" >
+          <button type="button" class="buttoninbox" id="search-fb">Search</button>
       </div>
-      <div>
-      <label>...Or Extract from FreeBase</label>
-      <input type="text" id="query" >
-      <button type="button" id="search-fb">Search</button>
+      <div id="second" class="span3 box well">
+          <h2>Select Type:</h2>
+          <select name="type" id="type_select_from">
+          </select>
+          <button type="btn" class="buttoninbox" id="extract-fb">Select</button>
       </div>
-      <div>
-      <label>Select Type:</label>
-      <select name="type" id="type_select_from">
-      </select>
+      <div id="third" class="span3 well" >
+          <h2>Play!</h2>
+          <div class="quizViewer">
+         </div>
+          <button type="btn" class="button" id="create-quiz-fb">Create Quiz!</button>
+          <button type="btn" class="button" id="answer0">Create Quiz!</button>
+          <button type="btn" class="button" id="answer1">Create Quiz!</button>
+          <button type="btn" class="button" id="answer2">Create Quiz!</button>
+          <button type="btn" class="button" id="answer3">Create Quiz!</button>
+          
+          
       </div>
-      <div>
-      <label>...Extract!</label>
-      <button type="button" id="extract-fb">Extract Graph</button>
-      </div>
-  </div>
-  <div class="hero-unit">
-      <h2>Step 2: Create Quiz!</h2>
-      <button type="button" id="create-quiz">Create Quiz form CulturePlex-Graphs!</button>
-      <button type="button" id="create-quiz-fb">Create Quiz form FreeBase-Graphs!</button>
-      <div class="quizViewer">
-      </div>
+
   </div>
 </body>

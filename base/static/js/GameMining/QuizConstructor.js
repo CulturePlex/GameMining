@@ -1,14 +1,80 @@
 var QuizConstructor = {
+  relationship: null,
   edges : null,
   attrib : null,
   value: null,
+  answers: null,
+  end:null,
+  start:null,
+  numberOfRels: 430,
+  counter: 0,
+  choices: 4,
+  getAnswer: function(ind) {
+     var jumpingTemp = Math.floor(Math.random()*QuizConstructor.numberOfRels);
+     jQuery.ajax({
+         url: GraphManager.HOST + "db/data/relationship/" + jumpingTemp,
+         success: function(response){
+//           if (response.type === QuizConstructor.attrib)
+//           {
+              jQuery.ajax({
+                 url: response.start,
+                 success: function(response){
+                    QuizConstructor.answers[ind] = response.data.name;
+                    QuizConstructor.counter++;
+                    if(QuizConstructor.counter < QuizConstructor.choices - 1)
+                    {
+                    }else
+                    {
+                    QuizConstructor.setQuiz("FREEBASE_GRAPH");
+                    }
+                 },
+                 failed: function() {
+                       console.log('*************************ERROR***********************');
+                 }
+              });
+//            }
+          },
+          failed: function() {
+               console.log('*************************ERROR***********************');
+         }
+      });
+  },
   createQuiz: function(graph_type){
-    var correct;
-    var jumping = 4;
+    QuizConstructor.answers = [];
+    var jumping = Math.floor(Math.random()*QuizConstructor.numberOfRels);
     jQuery.ajax({
       url: GraphManager.HOST + "db/data/relationship/" + jumping,
       success: function(response){
-      QuizConstructor.attrib = response.type;
+      QuizConstructor.relationship = response;
+      QuizConstructor.answers=[];
+      //Adding question and correct answer
+      QuizConstructor.attrib = QuizConstructor.relationship.type;
+      
+      jQuery.ajax({
+        url: QuizConstructor.relationship.end,
+        success: function(response){
+          QuizConstructor.end = response;
+          QuizConstructor.answers=[];
+          
+          QuizConstructor.value = QuizConstructor.end.data.name;
+          jQuery.ajax({
+            url: QuizConstructor.relationship.start,
+            success: function(response){
+              QuizConstructor.start = response;
+              QuizConstructor.correct = QuizConstructor.start.data.name;
+              QuizConstructor.counter = 0;
+              console.log(QuizConstructor.correct);
+              QuizConstructor.answers[0] = QuizConstructor.correct;
+              //Adding incorrect answers
+              for(var i=1;i<QuizConstructor.choices;i++)
+              {
+                  QuizConstructor.getAnswer(i);
+              }
+
+            }
+        });
+      }
+    });
   },
   failure : function () {
         console.log('fallo');
@@ -16,103 +82,79 @@ var QuizConstructor = {
         //Ext.Msg.alert(i18n.gettext('Unable to install'), i18n.gettext('Try again later'), Ext.emptyFn);
     }
     });
-/*    var edges = GraphEditor.getGraphEdgesJSON();
-    var nodes = GraphEditor.getGraphNodesJSON();
-*/
-    var answers=[];
 
-/*    var top = parseInt(Math.random(10)*QuizConstructor.edges.length);
-    if(graph_type == "FREEBASE_GRAPH")
+  },
+  setQuiz: function(graph_type){
+              if(graph_type == "FREEBASE_GRAPH")
+              {
+                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib +'?';
+              }
+              if(graph_type == "CULTUREPLEX_GRAPH")
+              {
+                  var question = 'Which of the following is <em>' + attrib + '</em> ' + value +'?';
+              }
+              var quiz = '<h>' + question + '</h2>';
+              
+              //Deleting duplicated answers
+              var j = 0;
+              while ( j < QuizConstructor.answers.length )
+              {
+                  if ($.inArray(QuizConstructor.answers[j], QuizConstructor.answers)!== j)
+                  {
+                      QuizConstructor.answers.splice(j,2);
+                      console.log('repetido');
+                  }
+                  j++;
+              }
+              console.log(QuizConstructor.answers);
+              
+              //Mixing answers
+              var answersmixed = [];
+              j = 0;
+              while ( j < QuizConstructor.answers.length )
+              {
+                  var r = parseInt(Math.random(10)*QuizConstructor.answers.length);
+                  if ( typeof(answersmixed[r] ) === "undefined")
+                  {
+                      answersmixed[r] = QuizConstructor.answers[j];
+                      j++;
+                  }
+              }
+              for (var i = 0 ; i < 4; i++)
+              {
+                  $('#answer'+i).removeClass("btn-success");
+                  $('#answer'+i).removeClass("btn-danger");
+                  
+                  $('#answer'+i).hide();
+              }
+              for (var i = 0 ; i < QuizConstructor.answers.length; i++)
+              {
+                  $('#answer'+i).html(answersmixed[i]);
+                  $('#answer'+i).show();
+              }
+              
+              
+              //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
+              $('.quizViewer').empty();
+              $('.quizViewer').append(quiz);
+  },
+  checkAnswer: function(i) {
+    console.log(QuizConstructor.correct);
+    console.log($('#answer'+i).html());
+    if($('#answer'+i).html() === QuizConstructor.correct)
     {
-        console.log('_'+QuizConstructor.edges[top].replace(/\(.+\)/,'')+'_');
-        while( QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Object name ' || 
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'class-instance' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Superclass-Subclass' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Hide level' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Role class' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Software ' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Association type' ||
-               QuizConstructor.edges[top].replace(/\(.+\)/,'') === 'Role'
-               )
-        {
-            
-            top = parseInt(Math.random(10)*QuizConstructor.edges.length);
-        }
+        $('#answer'+i).addClass("btn-success");
     }
-    */
-    //Adding question and correct answer
-    attrib = QuizConstructor.edges[top].type;
-    /*value = QuizConstructor.edges[top].target;
-    correct = QuizConstructor.edges[top].source;
-    
-    var counter = 0;
-    var index = 0;
-    //Adding incorrect answers
-    while(counter < 3 && index < edges.length)
+    else
     {
-        if ( edges[index].type === attrib && edges[index].source !== correct)
-        {
-            answers[counter] = edges[index].source;
-            counter++;
-        }
-        index++;
+        $('#answer'+i).addClass("btn-danger");
     }
-    answers[3] = correct;
-    //Translating FB terms
-    if(graph_type == "FREEBASE_GRAPH")
-    {
-        if(attrib === 'class-instance')
-        {
-            attrib = 'Is';
-        }
-    }
-    attrib = attrib.replace(/\(.+\)/,'');
-    value = value.replace(/\(.+\)/,'');
-    if(graph_type == "FREEBASE_GRAPH")
-    {
-        var question = 'Which of the followings has ' + value +' as ' + attrib +'?';
-    }
-    if(graph_type == "CULTUREPLEX_GRAPH")
-    {
-        var question = 'Which of the following is ' + attrib + ' ' + value +'?';
-    }
-    var quiz = '<div>' + 'Quiestion: ' + question + '</div>';
-    
-    //Deleting duplicated answers
-    var j = 0;
-    console.log(answers);
-    while ( j < answers.length )
-    {
-        if ($.inArray(answers[j], answers)!== j)
-        {
-            answers.splice(j,2);
-            console.log('repetido');
-        }
-        j++;
-    }
-    console.log(answers);
-    //Mixing answers
-    var answersmixed = [];
-    j = 0;
-    while ( j < answers.length )
-    {
-        var r = parseInt(Math.random(10)*answers.length);
-        if ( typeof(answersmixed[r] ) === "undefined")
-        {
-            answersmixed[r] = answers[j];
-            j++;
-        }
-    }
-    
-    for (var i = 0 ; i < answers.length; i++)
-    {
-        quiz += '<div>' + 'Answer ' + i + ': ' + answersmixed[i] + '</div>';
-    }
-    
-    
-    quiz += '<div>' + 'Correct Answer :' + correct + '</div>';
-    $('.quizViewer').empty();
-    $('.quizViewer').append(quiz);*/
+    setTimeout(function(){
+        QuizConstructor.createQuiz();
+    },100);
+
+
+  
   }
 }
 
