@@ -6,45 +6,88 @@ var QuizConstructor = {
   answers: null,
   end:null,
   start:null,
-  numberOfRels: 157,
+  numberOfRels: 44,
   counter: 0,
   choices: 4,
-  getAnswer: function(ind) {
-     var jumpingTemp = Math.floor(Math.random()*QuizConstructor.numberOfRels);
+  treshold: 100,
+  bigJson: null,
+  answerIndex: null,
+    
+  contains: function(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+  return false;
+},
+  getAnswer: function() {
+     QuizConstructor.counter++;
+     QuizConstructor.answerIndex++;
+     var jumpingTemp = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
      jQuery.ajax({
-         url: GraphManager.HOST + "db/data/relationship/" + jumpingTemp,
+         url: jumpingTemp,
          success: function(response){
-//           if (response.type === QuizConstructor.attrib)
-//           {
+
+             console.log(QuizConstructor.attrib);
+             if (response.type === QuizConstructor.attrib && QuizConstructor.counter < QuizConstructor.treshold)
+             {
               jQuery.ajax({
                  url: response.start,
                  success: function(response){
-                    QuizConstructor.answers[ind] = response.data.name;
-                    QuizConstructor.counter++;
-                    if(QuizConstructor.counter < QuizConstructor.choices - 1)
+                    console.log(QuizConstructor.contains(QuizConstructor.answers,response.data.name));
+                    if(!QuizConstructor.contains(QuizConstructor.answers,response.data.name) && response.data.name != QuizConstructor.correct )
                     {
-                    }else
+                      QuizConstructor.answers[QuizConstructor.answerIndex] = response.data.name;
+                      if(QuizConstructor.answerIndex < QuizConstructor.choices - 1)
+                      {
+                          console.log(response);
+                          QuizConstructor.answerIndex++;
+                          QuizConstructor.getAnswer(QuizConstructor.answerIndex);
+                      }else
+                      {
+                          QuizConstructor.preSetQuiz("FREEBASE_GRAPH");
+                      }
+                    }
+                    else
                     {
-                    QuizConstructor.setQuiz("FREEBASE_GRAPH");
+                          QuizConstructor.getAnswer(QuizConstructor.answerIndex);
                     }
                  },
                  failed: function() {
                        console.log('*************************ERROR***********************');
                  }
               });
-//            }
+            }else
+            {
+                if(QuizConstructor.counter > QuizConstructor.treshold)
+                {
+                    QuizConstructor.preSetQuiz("FREEBASE_GRAPH");
+                }
+                else
+                {
+
+                    QuizConstructor.getAnswer(QuizConstructor.answerIndex);
+                }
+            }
           },
           failed: function() {
                console.log('*************************ERROR***********************');
          }
       });
   },
+   
   createQuiz: function(graph_type){
+    $('#answer0').hide();
+    $('#answer1').hide();
+    $('#answer2').hide();
+    $('#answer3').hide();
     QuizConstructor.answers = [];
-    var jumping = Math.floor(Math.random()*QuizConstructor.numberOfRels);
+    var jumping = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
     jQuery.ajax({
-      url: GraphManager.HOST + "db/data/relationship/" + jumping,
+      url: jumping,
       success: function(response){
+      console.log(response);
       QuizConstructor.relationship = response;
       QuizConstructor.answers=[];
       //Adding question and correct answer
@@ -66,10 +109,9 @@ var QuizConstructor = {
               console.log(QuizConstructor.correct);
               QuizConstructor.answers[0] = QuizConstructor.correct;
               //Adding incorrect answers
-              for(var i=1;i<QuizConstructor.choices;i++)
-              {
-                  QuizConstructor.getAnswer(i);
-              }
+              QuizConstructor.answerIndex=0;
+              QuizConstructor.counter=0;
+              QuizConstructor.getAnswer(QuizConstructor.answerIndex);
 
             }
         });
@@ -84,10 +126,23 @@ var QuizConstructor = {
     });
 
   },
+  preSetQuiz: function(graph_type){
+      console.log(QuizConstructor.answers);
+      console.log(QuizConstructor.answers[4]);
+      console.log(QuizConstructor.answers.length);
+      if( QuizConstructor.answers.length > 1)
+      {
+          setTimeout(QuizConstructor.setQuiz(graph_type),1000);
+      }
+      else
+      {
+        QuizConstructor.createQuiz(graph_type);
+      }
+  },
   setQuiz: function(graph_type){
               if(graph_type == "FREEBASE_GRAPH")
               {
-                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib +'?';
+                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib.replaceAll("_"," ") +'?';
               }
               if(graph_type == "CULTUREPLEX_GRAPH")
               {
@@ -104,39 +159,61 @@ var QuizConstructor = {
                       QuizConstructor.answers.splice(j,2);
                       console.log('repetido');
                   }
+                  if (QuizConstructor.answers[j]==undefined)
+                  {
+                      QuizConstructor.answers.splice(j,2);
+                      console.log('repetido');
+                  }
                   j++;
               }
               console.log(QuizConstructor.answers);
-              
-              //Mixing answers
-              var answersmixed = [];
-              j = 0;
-              while ( j < QuizConstructor.answers.length )
+              //If there is only one, restart quiz
+              if(QuizConstructor.answers.length<2 || QuizConstructor.contains(QuizConstructor.answers,undefined))
               {
-                  var r = parseInt(Math.random(10)*QuizConstructor.answers.length);
-                  if ( typeof(answersmixed[r] ) === "undefined")
-                  {
-                      answersmixed[r] = QuizConstructor.answers[j];
-                      j++;
-                  }
+                  QuizConstructor.createQuiz(graph_type);
               }
-              for (var i = 0 ; i < 4; i++)
+              else
               {
-                  $('#answer'+i).removeClass("btn-success");
-                  $('#answer'+i).removeClass("btn-danger");
-                  
-                  $('#answer'+i).hide();
+                
+                //Mixing answers
+                var answersmixed = [];
+                j = 0;
+                while ( j < QuizConstructor.answers.length )
+                {
+                    var r = parseInt(Math.random(10)*QuizConstructor.answers.length);
+                    if ( typeof(answersmixed[r] ) === "undefined")
+                    {
+                        answersmixed[r] = QuizConstructor.answers[j];
+                        j++;
+                    }
+                }
+                for (var i = 0 ; i < 4; i++)
+                {
+                    $('#answer'+i).removeClass("btn-success");
+                    $('#answer'+i).removeClass("btn-danger");
+                    
+                    $('#answer'+i).hide();
+                }
+                $('#answer0').hide();
+                $('#answer1').hide();
+                $('#answer2').hide();
+                $('#answer3').hide();
+                for (var i = 0 ; i < QuizConstructor.answers.length; i++)
+                {
+                    $('#answer'+i).html(answersmixed[i]);
+                    $('#answer'+i).show();
+                }
+                
+                if($('#answer1').html=="Create Quiz!"){$('#answer1').hide();}
+                if($('#answer0').html=="Create Quiz!"){$('#answer0').hide();}
+                if($('#answer2').html=="Create Quiz!"){$('#answer2').hide();}
+                if($('#answer3').html=="Create Quiz!"){$('#answer3').hide();}
+
+                //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
+                $('.quizViewer').empty();
+                $('.quizViewer').append(quiz);
+                $.unblockUI();
               }
-              for (var i = 0 ; i < QuizConstructor.answers.length; i++)
-              {
-                  $('#answer'+i).html(answersmixed[i]);
-                  $('#answer'+i).show();
-              }
-              
-              
-              //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
-              $('.quizViewer').empty();
-              $('.quizViewer').append(quiz);
   },
   checkAnswer: function(i) {
     console.log(QuizConstructor.correct);

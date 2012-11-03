@@ -2,28 +2,60 @@ var GraphExtractor = {
   //Freebase Extractor Variables:
   name: "",
   type: "",
+  rowRequests:[],
   search: function () {
     GraphExtractor.name = $('#query')[0].value;
-    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + GraphExtractor.name + '","type":[]}]', function (data) {
+    var array = $('#query')[0].value.split(',');
+    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
+        $("#second").show();
       GraphExtractor.showTypes(data.result);
     });
   },
   get: function () {
     GraphExtractor.type = $('#type_select_from').val();
-    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + GraphExtractor.name + '","type":"' + GraphExtractor.type +'","*":null}', function (data) {
+    GraphExtractor.name = $('#query')[0].value;
+    var array = $('#query')[0].value.split(',');
+    for(var i=0;i<array.length;i++) {
+        var query={
+            "name": array[i] ,
+            "type": GraphExtractor.type ,
+            "*":null
+        };
+        var key= 'AIzaSyAJHbWeXtvKBJkZUE6KFjr8Ey43chdw6X4';
+        var params = {
+          'key': key,
+          'query': JSON.stringify(query)
+        };
+        $.getJSON('https://www.googleapis.com/freebase/v1/mqlread' + '?callback=?', params, function(response) {
+          console.log(response);
+          GraphExtractor.setGraph(response.result,false);
+      });
+    }
+
+  },
+  getRec: function () {
+    GraphExtractor.type = $('#type_select_from').val();
+    GraphExtractor.name = $('#query')[0].value;
+    var array = $('#query')[0].value.split(',');
+    for(var i=0;i<array.length;i++) {
+    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + array[i] + '","type":"' + GraphExtractor.type +'","*":[{}]}', function (data) {
       console.log(data);
-      GraphExtractor.setGraph(data.result,true);
+      GraphExtractor.setGraphRec(data.result,true);
     });
+    }
   },
   getStar: function (name,type,time) {
+    if(name !=undefined && name!=null && type!=undefined && type!=null)
+    {
     setTimeout(function(){
-        console.log('pidiendo nombre '+ name + ' yipo '+ type);
+        console.log('Pidiendo nodo, nombre: '+ name + ', tipo: '+ type);
         jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + name + '","type":"' + type +'","*":null}', function (data) {
           console.log('montando estrella');
           console.log(data);
           GraphExtractor.setGraph(data.result,false);
         });
     },time);
+    }
   },
   init: function () {
   },
@@ -41,33 +73,47 @@ var GraphExtractor = {
         }
       }
     });
+    $('#second').append(GraphExtractor.name);
   },
   //*=[{}]
-    setGraphNew: function (result,r) {
-    GraphManager.init();
+  setGraphRec: function (result,r) {
     var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
     var node;
     var time=1000;
     console.log(result);
     for (var i in result) {
-        for (var j in result[i])
+        if(5<result[i].length<10)
         {
-              console.log(result[i]);
-              node = GraphManager.graph.node({ "name" : result[i].name , "type" : result[i].type[0]});
-              GraphManager.graph.rel(origin, {"name" : result[i].type[0] }, node);
-        }
-            /*if (v != null)
-            {
-         
-            }*/
+          for (var j in result[i])
+          {
+                if(result[i][j].type)
+                {
+   /**               jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + result[i][j].name + '","type":[]}]', function (data) {
+                    $("#second").show();
+                  GraphExtractor.showTypes(data.result);
+                  });*/
+                  console.log(result[i][j].name);
+                  console.log(result[i][j].type[0]);
+                  node = GraphManager.graph.node({ "name" : result[i][j].name , "type" : result[i][j].type[0]});
+                  var rel = GraphManager.graph.rel(origin, {"name" : result[i][j].type[0] }, node);
+                  console.log(rel);
+                  console.log('entrando');
+                  GraphExtractor.getStar(result[i][j].name,GraphExtractor.type,time);
+                  time+=1000;
+                }
           }
-    //});
+          $('#time').empty();
+          $('#time').append('Time remaining: ' +time);
+        }
+    }
+    $("#third").show();
   },
 
 
   //*=null
   setGraph: function (result,r) {
-    GraphManager.init();
+    if(result)
+    {
     var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
     var node;
     var time=1000;
@@ -79,26 +125,37 @@ var GraphExtractor = {
           {
             for (var obj in v)
             {
-            console.log(r);
-              if(r)
+              console.log(k);
+              if(v[obj] != null)
               {
-               console.log('entrando');
-               //GraphExtractor.getStar(v[obj],k,time);
-               time+=3000;
+                node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
+                console.log(node);
+                var rel2 = GraphManager.graph.rel(origin, k , node);
+                rel2.then(function(relationship) {
+                  console.log(relationship.getSelf());
+                  GraphManager.relationships.push(relationship.getSelf());
+                  });
               }
-              node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
-              GraphManager.graph.rel(origin, k , node);
             }
           } else
           {
             if (v != null)
             {
+
               node = GraphManager.graph.node({ "name" : v , "type" : k});
-              GraphManager.graph.rel(origin, {"name" : k }, node);
+              console.log(node);
+              var rel = GraphManager.graph.rel(origin, k , node);
+              rel.then(function(relationship) {
+                console.log(relationship);
+                GraphManager.relationships.push(relationship.getSelf());
+                });
+
             }
           }
         }
     });
+    $("#third").show();
+  }
   }
 };
 
