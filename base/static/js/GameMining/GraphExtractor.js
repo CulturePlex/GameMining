@@ -73,6 +73,7 @@ var GraphExtractor = {
         }
       }
     });
+    $('#second').append(GraphExtractor.name);
   },
   //*=[{}]
   setGraphRec: function (result,r) {
@@ -87,13 +88,17 @@ var GraphExtractor = {
           {
                 if(result[i][j].type)
                 {
+   /**               jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + result[i][j].name + '","type":[]}]', function (data) {
+                    $("#second").show();
+                  GraphExtractor.showTypes(data.result);
+                  });*/
                   console.log(result[i][j].name);
                   console.log(result[i][j].type[0]);
                   node = GraphManager.graph.node({ "name" : result[i][j].name , "type" : result[i][j].type[0]});
                   var rel = GraphManager.graph.rel(origin, {"name" : result[i][j].type[0] }, node);
                   console.log(rel);
                   console.log('entrando');
-                  GraphExtractor.getStar(result[i][j].name,result[i][j].type[0],time);
+                  GraphExtractor.getStar(result[i][j].name,GraphExtractor.type,time);
                   time+=1000;
                 }
           }
