@@ -6,23 +6,32 @@ var QuizConstructor = {
   answers: null,
   end:null,
   start:null,
-  numberOfRels: 430,
+  numberOfRels: 44,
   counter: 0,
   choices: 4,
-  getAnswer: function(ind) {
-     var jumpingTemp = Math.floor(Math.random()*QuizConstructor.numberOfRels);
+  treshold: 20,
+  bigJson: null,
+  answerIndex: null,
+  getAnswer: function() {
+
+
+    QuizConstructor.answerIndex++;
+     var jumpingTemp = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
      jQuery.ajax({
-         url: GraphManager.HOST + "db/data/relationship/" + jumpingTemp,
+         url: jumpingTemp,
          success: function(response){
-//           if (response.type === QuizConstructor.attrib)
-//           {
+             console.log(response.type);
+             console.log(QuizConstructor.attrib);
+             if (response.type === QuizConstructor.attrib)
+             {
               jQuery.ajax({
                  url: response.start,
                  success: function(response){
-                    QuizConstructor.answers[ind] = response.data.name;
-                    QuizConstructor.counter++;
-                    if(QuizConstructor.counter < QuizConstructor.choices - 1)
+                    QuizConstructor.answers[QuizConstructor.answerIndex] = response.data.name;
+                    if(QuizConstructor.answerIndex < QuizConstructor.choices - 1 || QuizConstructor.counter > QuizConstructor.treshold)
                     {
+                        QuizConstructor.answerIndex++;
+                        QuizConstructor.getAnswer(QuizConstructor.answerIndex);
                     }else
                     {
                     QuizConstructor.setQuiz("FREEBASE_GRAPH");
@@ -32,19 +41,25 @@ var QuizConstructor = {
                        console.log('*************************ERROR***********************');
                  }
               });
-//            }
+            }
+            {
+            QuizConstructor.counter++;
+            QuizConstructor.getAnswer(QuizConstructor.answerIndex);
+            }
           },
           failed: function() {
                console.log('*************************ERROR***********************');
          }
       });
   },
+   
   createQuiz: function(graph_type){
     QuizConstructor.answers = [];
-    var jumping = Math.floor(Math.random()*QuizConstructor.numberOfRels);
+    var jumping = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
     jQuery.ajax({
-      url: GraphManager.HOST + "db/data/relationship/" + jumping,
+      url: jumping,
       success: function(response){
+      console.log(response);
       QuizConstructor.relationship = response;
       QuizConstructor.answers=[];
       //Adding question and correct answer
@@ -66,10 +81,9 @@ var QuizConstructor = {
               console.log(QuizConstructor.correct);
               QuizConstructor.answers[0] = QuizConstructor.correct;
               //Adding incorrect answers
-              for(var i=1;i<QuizConstructor.choices;i++)
-              {
-                  QuizConstructor.getAnswer(i);
-              }
+              QuizConstructor.answerIndex=0;
+              QuizConstructor.counter=0;
+              QuizConstructor.getAnswer(QuizConstructor.answerIndex);
 
             }
         });
@@ -87,7 +101,7 @@ var QuizConstructor = {
   setQuiz: function(graph_type){
               if(graph_type == "FREEBASE_GRAPH")
               {
-                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib +'?';
+                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib.replaceAll("_"," ") +'?';
               }
               if(graph_type == "CULTUREPLEX_GRAPH")
               {

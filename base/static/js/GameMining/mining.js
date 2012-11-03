@@ -1,16 +1,26 @@
 $(document).ready(function(){
+  String.prototype.replaceAll = function(str1, str2, ignore) 
+  {
+	  return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+  }
   GraphExtractor.init();
   GraphManager.init();
-  //$("#second").hide();
-  //$("#third").hide();
-  //$(".chzn-select").chosen();
+  $("#second").hide();
+  $("#third").hide();
+  $(".chzn-select").chosen();
 
   $('#search-fb').click(function(){
+  $("#second").show();
     GraphExtractor.search();
   });
   
   $('#extract-fb').click(function(){
+  $("#third").show();
     GraphExtractor.get();
+  });
+  
+    $('#extract-rec').click(function(){
+    GraphExtractor.getRec();
   });
 
   $('#create-quiz').click(function(){

@@ -42,19 +42,18 @@
       </div>
       <div id="second" class="span3 box well">
           <h2>Select Type:</h2>
-          <select name="type" id="type_select_from">
-          </select>
-          <button type="btn" class="buttoninbox" id="extract-fb">Select</button>
+          <button type="btn" class="btn" id="extract-fb">Extract Normal</button>
+          <button type="btn" class="btn" id="extract-rec">Extract Recursively</button>
       </div>
       <div id="third" class="span3 well" >
           <h2>Play!</h2>
           <div class="quizViewer">
          </div>
           <button type="btn" class="button" id="create-quiz-fb">Create Quiz!</button>
-          <button type="btn" class="button" id="answer">Create Quiz!</button>
-          <button type="btn" class="button" id="answer">Create Quiz!</button>
-          <button type="btn" class="button" id="answer">Create Quiz!</button>
-          <button type="btn" class="button" id="answer">Create Quiz!</button>
+          <button type="btn" class="button" id="answer0">Create Quiz!</button>
+          <button type="btn" class="button" id="answer1">Create Quiz!</button>
+          <button type="btn" class="button" id="answer2">Create Quiz!</button>
+          <button type="btn" class="button" id="answer3">Create Quiz!</button>
           
           
       </div>
