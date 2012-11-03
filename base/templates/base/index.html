@@ -3,6 +3,7 @@
  {% get_static_prefix as STATIC_PREFIX %}
 {% block extra_scripts %}
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.min.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.blockUI.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/chosen.jquery.min.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphManager.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphExtractor.js"></script>
@@ -37,9 +38,9 @@
   <div>
       <div id="one" class="span3 box well">
           <h2>Generate a Quiz about:</h2>
-          <input type="text" id="query" >
-          <button type="button" class="buttoninbox" id="search-fb">Search</button>
-      </div>
+          <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type some things separated by commas...">
+          <button type="button" class="btn" id="search-fb">Search</button>
+          </div>
       <div id="second" class="span3 box well">
           <h2>Select Type:</h2>
           <select name="type" id="type_select_from">
@@ -56,6 +57,7 @@
           <button type="btn" class="button" id="answer1">Create Quiz!</button>
           <button type="btn" class="button" id="answer2">Create Quiz!</button>
           <button type="btn" class="button" id="answer3">Create Quiz!</button>
+          <div id="time"></div>
           
           
       </div>

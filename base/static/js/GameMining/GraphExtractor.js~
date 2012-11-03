@@ -2,9 +2,12 @@ var GraphExtractor = {
   //Freebase Extractor Variables:
   name: "",
   type: "",
+  rowRequests:[],
   search: function () {
     GraphExtractor.name = $('#query')[0].value;
-    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + GraphExtractor.name + '","type":[]}]', function (data) {
+    var array = $('#query')[0].value.split(',');
+    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
+        $("#second").show();
       GraphExtractor.showTypes(data.result);
     });
   },
@@ -33,20 +36,26 @@ var GraphExtractor = {
   getRec: function () {
     GraphExtractor.type = $('#type_select_from').val();
     GraphExtractor.name = $('#query')[0].value;
-    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + GraphExtractor.name + '","type":"' + GraphExtractor.type +'","*":[{}]}', function (data) {
+    var array = $('#query')[0].value.split(',');
+    for(var i=0;i<array.length;i++) {
+    jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + array[i] + '","type":"' + GraphExtractor.type +'","*":[{}]}', function (data) {
       console.log(data);
       GraphExtractor.setGraphRec(data.result,true);
     });
+    }
   },
   getStar: function (name,type,time) {
+    if(name !=undefined && name!=null && type!=undefined && type!=null)
+    {
     setTimeout(function(){
-        console.log('pidiendo nombre '+ name + ' yipo '+ type);
+        console.log('Pidiendo nodo, nombre: '+ name + ', tipo: '+ type);
         jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query={"name":"' + name + '","type":"' + type +'","*":null}', function (data) {
           console.log('montando estrella');
           console.log(data);
           GraphExtractor.setGraph(data.result,false);
         });
     },time);
+    }
   },
   init: function () {
   },
@@ -72,26 +81,34 @@ var GraphExtractor = {
     var time=1000;
     console.log(result);
     for (var i in result) {
-        for (var j in result[i])
+        if(5<result[i].length<10)
         {
-              if(result[i][j].type)
-              {
-                console.log(result[i][j].name);
-                console.log(result[i][j].type[0]);
-                node = GraphManager.graph.node({ "name" : result[i][j].name , "type" : result[i][j].type[0]});
-                var rel = GraphManager.graph.rel(origin, {"name" : result[i][j].type[0] }, node);
-                console.log(rel);
-                console.log('entrando');
-                GraphExtractor.getStar(result[i][j].name,result[i][j].type[0],time);
-                time+=500;
-              }
+          for (var j in result[i])
+          {
+                if(result[i][j].type)
+                {
+                  console.log(result[i][j].name);
+                  console.log(result[i][j].type[0]);
+                  node = GraphManager.graph.node({ "name" : result[i][j].name , "type" : result[i][j].type[0]});
+                  var rel = GraphManager.graph.rel(origin, {"name" : result[i][j].type[0] }, node);
+                  console.log(rel);
+                  console.log('entrando');
+                  GraphExtractor.getStar(result[i][j].name,result[i][j].type[0],time);
+                  time+=2000;
+                }
+          }
+          $('#time').empty();
+          $('#time').append('Time remaining: ' +time);
         }
     }
+    $("#third").show();
   },
 
 
   //*=null
   setGraph: function (result,r) {
+    if(result)
+    {
     var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
     var node;
     var time=1000;
@@ -132,6 +149,8 @@ var GraphExtractor = {
           }
         }
     });
+    $("#third").show();
+  }
   }
 };
 
