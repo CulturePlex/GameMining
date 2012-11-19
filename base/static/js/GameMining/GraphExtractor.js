@@ -8,7 +8,18 @@ var GraphExtractor = {
     var array = $('#query')[0].value.split(',');
     jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
         $("#second").show();
-      GraphExtractor.showTypes(data.result);
+	  var types = [];
+      $.each(data.result, function (k, v) {
+		 if (v.type instanceof Array)
+	     {
+			for(var i=0;i<v.type.length;i++)
+			{		
+					types.push(v.type[i]);
+			}	
+		 }
+	  });
+	  console.log(types);
+      GraphExtractor.showTypes(types);
     });
   },
   get: function () {
@@ -59,21 +70,23 @@ var GraphExtractor = {
   },
   init: function () {
   },
-  showTypes: function (result) {
+  showTypes: function (types) {
+	function singles( array ) {
+		for( var index = 0, single = []; index < array.length; index++ ) {
+		    if( array.indexOf( array[index], array.indexOf( array[index] ) + 1 ) == -1 ) single.push( array[index] );    
+		};
+		return single;
+	};
+	types= singles(types);
     $('#type_select_from').empty();
-    $.each(result, function (k, v) {
-      if (v.type instanceof Array)
-      {
-        for (var obj in v.type)
-        {
-          if (v.type[obj] !== "/common/topic" && v.type[obj] !== "/media_common/cataloged_instance")
-          {
-            $("#type_select_from").append('<option value=' + v.type[obj] + '>' + v.type[obj] + '</option>');
-          }
-        }
-      }
-    });
-    $('#second').append(GraphExtractor.name);
+    for(var i=0;i<types.length;i++)
+	{
+		
+		if(types[i] !== "/common/topic" && types[i] !== "/media_common/cataloged_instance" )
+		{
+			 $("#type_select_from").append('<option value=' + types[i] + '>' + types[i] + '</option>');
+		}
+	}
   },
   //*=[{}]
   setGraphRec: function (result,r) {
