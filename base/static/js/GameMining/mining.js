@@ -68,4 +68,11 @@ $(document).ready(function(){
     $('#answer1').hide();
     $('#answer2').hide();
     $('#answer3').hide();
+
+	//Setting button behaviours for enter key up.
+	$("#query").keyup(function(event){
+		if(event.keyCode == 13){
+		    $("#search-fb").click();
+		}
+	});
 });
