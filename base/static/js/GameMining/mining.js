@@ -31,10 +31,19 @@ $(document).ready(function(){
   $(".chzn-select").chosen();
 
   $('#search-fb').click(function(){
+	$('#search-content').hide();
+	$('#search-msg').html("<h2>Loading content...</h2>");
+	$('#search-msg').show();
+	$('#second').show();
+
     GraphExtractor.search();
   });
   
   $('#extract-fb').click(function(){
+	$('#play-content').hide();
+	$('#play-msg').html("<h2>Adding content...</h2>");
+	$('#play-msg').show();
+    $("#third").show();
     GraphExtractor.get();
   });
   

@@ -2,12 +2,12 @@ var GraphExtractor = {
   //Freebase Extractor Variables:
   name: "",
   type: "",
+  concepts : [],
   rowRequests:[],
   search: function () {
     GraphExtractor.name = $('#query')[0].value;
     var array = $('#query')[0].value.split(',');
     jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
-        $("#second").show();
 	  var types = [];
       $.each(data.result, function (k, v) {
 		 if (v.type instanceof Array)
@@ -23,6 +23,7 @@ var GraphExtractor = {
     });
   },
   get: function () {
+	$("#second").hide();
     GraphExtractor.type = $('#type_select_from').val();
     GraphExtractor.name = $('#query')[0].value;
     var array = $('#query')[0].value.split(',');
@@ -84,8 +85,17 @@ var GraphExtractor = {
 		
 		if(types[i] !== "/common/topic" && types[i] !== "/media_common/cataloged_instance" )
 		{
-			 $("#type_select_from").append('<option value=' + types[i] + '>' + types[i] + '</option>');
+			 $("#type_select_from").append('<option value=' + types[i] + '>' + types[i].replace(/\//g, " ").replace("_", " ") + '</option>');
 		}
+	}
+	if(types.length == 0)
+	{
+		$('#search-msg').html("Nothing was found with the word: "+ GraphExtractor.name+". Try again!");
+	}
+	else
+	{
+    $('#search-content').show();
+    $('#search-msg').hide();
 	}
   },
   //*=[{}]
@@ -132,7 +142,7 @@ var GraphExtractor = {
     var time=1000;
     console.log(result);
     $.each(result, function (k, v) {
-        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp")
+        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp" )
         {
           if (v instanceof Array)
           {
@@ -167,7 +177,17 @@ var GraphExtractor = {
           }
         }
     });
-    $("#third").show();
+	GraphExtractor.concepts.push(result.name);;
+	$('#content-added').append(result.name+" ");
+    if(GraphExtractor.concepts.length < 3)
+	{
+		$('#play-msg').html("There is so little information in the system to create a quiz. Add more! Current concepts  in the system:"+ GraphExtractor.concepts+".");
+	}
+	else
+	{
+    $('#play-content').show();
+    $('#play-msg').hide();
+	}
   }
   }
 };

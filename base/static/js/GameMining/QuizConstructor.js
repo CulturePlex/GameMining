@@ -75,10 +75,14 @@ var QuizConstructor = {
   },
    
   createQuiz: function(graph_type){
+	$('#play-msg').html("Creating Quiz... If this operation take too much time try adding more concepts!");
+	$('#play-msg').show();
     $('#answer0').hide();
     $('#answer1').hide();
     $('#answer2').hide();
     $('#answer3').hide();
+	$('#quizViewer').empty();
+
     QuizConstructor.answers = [];
     var jumping = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
     jQuery.ajax({
@@ -135,6 +139,7 @@ var QuizConstructor = {
       }
   },
   setQuiz: function(graph_type){
+		      $('#play-msg').hide();
               if(graph_type == "FREEBASE_GRAPH")
               {
                   var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib.replaceAll("_"," ") +'?';
@@ -211,6 +216,7 @@ var QuizConstructor = {
               }
   },
   checkAnswer: function(i) {
+    console.log($('#quizViewer'));
     console.log(QuizConstructor.correct);
     console.log($('#answer'+i).html());
     if($('#answer'+i).html() === QuizConstructor.correct)
@@ -223,7 +229,7 @@ var QuizConstructor = {
     }
     setTimeout(function(){
         QuizConstructor.createQuiz();
-    },100);
+    },400);
 
 
   

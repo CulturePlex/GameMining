@@ -38,28 +38,35 @@
   <div>
       <div id="one" class="span3 box well">
           <h2>Generate a Quiz about:</h2>
-          <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type some things separated by commas...">
+          <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type something...">
           <button type="button" class="btn" id="search-fb">Search</button>
-          </div>
+      </div>
       <div id="second" class="span3 box well">
+		<div id="search-content">
           <h2>Select Type:</h2>
           <select name="type" id="type_select_from">
           </select>
-          <button type="btn" class="btn" id="extract-fb">Extract Normal</button>
-          <button type="btn" class="btn" id="extract-rec">Extract Recursively</button>
+          <button type="btn" class="btn" id="extract-fb">Extract</button>
+        </div>
+		<div id="search-msg">
+          <h2>Loading content...</h2>
+        </div>
       </div>
       <div id="third" class="span3 well" >
-          <h2>Play!</h2>
-          <div class="quizViewer">
-         </div>
+		<div id="play-content">
+		  <h3><div id="content-added">Quiz content: </div></h3>
+          <div id="quizViewer" class="quizViewer">
+          </div>
           <button type="btn" class="button" id="create-quiz-fb">Create Quiz!</button>
           <button type="btn" class="button" id="answer0">Create Quiz!</button>
           <button type="btn" class="button" id="answer1">Create Quiz!</button>
           <button type="btn" class="button" id="answer2">Create Quiz!</button>
           <button type="btn" class="button" id="answer3">Create Quiz!</button>
           <div id="time"></div>
-          
-          
+        </div>
+		<div id="play-msg">
+          <h2>Adding content...</h2>
+        </div>
       </div>
 
   </div>
