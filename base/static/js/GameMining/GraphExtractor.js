@@ -197,6 +197,8 @@ var GraphExtractor = {
 	}
 	$("#content-list").append('<li>name:<b>'+result.name+'</b>,type:'+GraphExtractor.type+'</li>');
 	console.log(GraphExtractor.concepts);
+	$("#query").val("");
+	$("#first-title").html("Type another concept:");	
     if(maximum < 3)
 	{
 		$('#play-msg').html("There is so little information in the system to create a quiz. Add more concepts <FONT color='red'> of the same type!</font>");
