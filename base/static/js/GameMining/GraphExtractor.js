@@ -201,7 +201,7 @@ var GraphExtractor = {
 	$("#first-title").html("Type another concept:");	
     if(maximum < 3)
 	{
-		$('#play-msg').html("There is so little information in the system to create a quiz. Add more concepts <FONT color='red'> of the same type!</font>");
+		$('#play-msg').html("There is not enough information to create a quiz yet. Please add more concepts <FONT color='red'> of the same type!</font>");
 	}
 	else
 	{
