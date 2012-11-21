@@ -21,6 +21,7 @@ var GraphExtractor = {
 		 }
 	  });
 	  console.log(types);
+	  types.sort();
       GraphExtractor.showTypes(types);
     });
   },
