@@ -87,23 +87,27 @@ var QuizConstructor = {
     var jumping = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
     jQuery.ajax({
       url: jumping,
-      success: function(response){
-      QuizConstructor.relationship = response;
+      success: function(response1){
+	  //response1 = JSON.parse(response1);
+      QuizConstructor.relationship = response1;
       QuizConstructor.answers=[];
       //Adding question and correct answer
       QuizConstructor.attrib = QuizConstructor.relationship.type;
       
       jQuery.ajax({
         url: QuizConstructor.relationship.end,
-        success: function(response){
-          QuizConstructor.end = response;
+        success: function(response2){
+			console.log(response2);
+		  //response2 = JSON.parse(response2);
+          QuizConstructor.end = response2;
           QuizConstructor.answers=[];
           
           QuizConstructor.value = QuizConstructor.end.data.name;
           jQuery.ajax({
             url: QuizConstructor.relationship.start,
-            success: function(response){
-              QuizConstructor.start = response;
+            success: function(response3){
+			  //response3 = JSON.parse(response3);
+              QuizConstructor.start = response3;
               QuizConstructor.correct = QuizConstructor.start.data.name;
               QuizConstructor.counter = 0;
               QuizConstructor.answers[0] = QuizConstructor.correct;
@@ -212,7 +216,7 @@ var QuizConstructor = {
                 //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
                 $('.quizViewer').empty();
                 $('.quizViewer').append(quiz);
-                $.unblockUI();
+                //$.unblockUI();
               }
   },
   checkAnswer: function(i) {

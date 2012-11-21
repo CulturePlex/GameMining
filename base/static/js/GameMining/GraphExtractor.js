@@ -9,7 +9,8 @@ var GraphExtractor = {
     var array = $('#query')[0].value.split(',');
     jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
 	  var types = [];
-	  console.log(data.result);
+	  //data = JSON.parse(data);
+	  console.log(data);
       $.each(data.result, function (k, v) {
 		 if (v.type instanceof Array)
 	     {
@@ -197,7 +198,7 @@ var GraphExtractor = {
 	console.log(GraphExtractor.concepts);
     if(maximum < 3)
 	{
-		$('#play-msg').html("There is so little information in the system to create a quiz. Add more concepts of the same type!");
+		$('#play-msg').html("There is so little information in the system to create a quiz. Add more concepts <FONT color='red'> of the same type!</font>");
 	}
 	else
 	{
