@@ -1,32 +1,9 @@
-$(document).ready(function(){
-  
-  
-  String.prototype.replaceAll = function(str1, str2, ignore) 
-  {
+set = function(){
+	String.prototype.replaceAll = function(str1, str2, ignore) 
+	{
 	  return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
-  }
-
-          /*
-      $('#extract-fb').click(function() { 
-          /*$.blockUI({ css: { 
-              border: 'none', 
-              padding: '15px', 
-              backgroundColor: '#000', 
-              '-webkit-border-radius': '10px', 
-              '-moz-border-radius': '10px', 
-              opacity: .5, 
-              color: '#fff' 
-          } });
-          }); 
-   */
-
-  GraphExtractor.init();
-  GraphManager.init();
-  $("#second").hide();
-  $("#third").hide();
-  $(".chzn-select").chosen();
-
-  $('#search-fb').click(function(){
+	};
+$('#search-fb').click(function(){
 	$('#search-content').hide();
 	$('#search-msg').html("<h2>Loading content...</h2>");
 	$('#search-msg').show();
@@ -68,6 +45,34 @@ $(document).ready(function(){
 	$('#answer3').click(function(){
 	  QuizConstructor.checkAnswer(3);
 	});
+	$("#query").keyup(function(event){
+		if(event.keyCode == 13){
+		   $("#search-fb").click();
+		}
+	});
+};
+start = function(){
+   /*
+      $('#extract-fb').click(function() { 
+          /*$.blockUI({ css: { 
+              border: 'none', 
+              padding: '15px', 
+              backgroundColor: '#000', 
+              '-webkit-border-radius': '10px', 
+              '-moz-border-radius': '10px', 
+              opacity: .5, 
+              color: '#fff' 
+          } });
+          }); 
+   */
+
+  GraphExtractor.init();
+  GraphManager.init();
+  $("#second").hide();
+  $("#third").hide();
+  $(".chzn-select").chosen();
+
+  
 
 	$('#answer0').hide();
 	$('#answer1').hide();
@@ -75,9 +80,5 @@ $(document).ready(function(){
 	$('#answer3').hide();
 
 	//Setting button behaviours for enter key up.
-	$("#query").keyup(function(event){
-		if(event.keyCode == 13){
-		   $("#search-fb").click();
-		}
-	});
-});
+	
+};
