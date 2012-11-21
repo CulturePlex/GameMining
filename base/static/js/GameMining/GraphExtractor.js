@@ -195,7 +195,7 @@ var GraphExtractor = {
 			console.log(maximum);
 		}
 	}
-	$("#content-list").append('<li>name:'+result.name+',type:'+GraphExtractor.type+'</li>');
+	$("#content-list").append('<li>name:<b>'+result.name+'</b>,type:'+GraphExtractor.type+'</li>');
 	console.log(GraphExtractor.concepts);
     if(maximum < 3)
 	{
