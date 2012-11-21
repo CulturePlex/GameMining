@@ -222,17 +222,18 @@ var QuizConstructor = {
     if($('#answer'+i).html() === QuizConstructor.correct)
     {
         $('#answer'+i).addClass("btn-success");
+		$("#time").html("Correct Answer!");
     }
     else
     {
+		$("#time").html("Wrong Answer!");
         $('#answer'+i).addClass("btn-danger");
     }
     setTimeout(function(){
+		$("#time").empty();
         QuizConstructor.createQuiz();
-    },400);
+    },1000);
 
-
-  
   }
 }
 

@@ -9,6 +9,7 @@ var GraphExtractor = {
     var array = $('#query')[0].value.split(',');
     jQuery.get("https://www.googleapis.com/freebase/v1/mqlread", 'query= [{"name":"' + array[0] + '","type":[]}]', function (data) {
 	  var types = [];
+	  console.log(data.result);
       $.each(data.result, function (k, v) {
 		 if (v.type instanceof Array)
 	     {

@@ -20,10 +20,6 @@ $(document).ready(function(){
           }); 
    */
 
-
- 
-
-
   GraphExtractor.init();
   GraphManager.init();
   $("#second").hide();
@@ -47,7 +43,7 @@ $(document).ready(function(){
     GraphExtractor.get();
   });
   
-    $('#extract-rec').click(function(){
+  $('#extract-rec').click(function(){
     GraphExtractor.getRec();
   });
 
@@ -55,33 +51,33 @@ $(document).ready(function(){
     QuizConstructor.createQuiz("CULTUREPLEX_GRAPH")
   });
 
-  $('#create-quiz-fb').click(function(){
-    $("#create-quiz-fb").hide();
-    QuizConstructor.createQuiz("FREEBASE_GRAPH")
+	$('#create-quiz-fb').click(function(){
+		$("#create-quiz-fb").hide();
+		QuizConstructor.createQuiz("FREEBASE_GRAPH")
     });
 
-    $('#answer0').click(function(){
-      QuizConstructor.checkAnswer(0);
-    });
-    $('#answer1').click(function(){
-      QuizConstructor.checkAnswer(1);
-    });
-    $('#answer2').click(function(){
-      QuizConstructor.checkAnswer(2);
-    });
-    $('#answer3').click(function(){
-      QuizConstructor.checkAnswer(3);
-    });
-  
-    $('#answer0').hide();
-    $('#answer1').hide();
-    $('#answer2').hide();
-    $('#answer3').hide();
+	$('#answer0').click(function(){
+	  QuizConstructor.checkAnswer(0);
+	});
+	$('#answer1').click(function(){
+	  QuizConstructor.checkAnswer(1);
+	});
+	$('#answer2').click(function(){
+	  QuizConstructor.checkAnswer(2);
+	});
+	$('#answer3').click(function(){
+	  QuizConstructor.checkAnswer(3);
+	});
+
+	$('#answer0').hide();
+	$('#answer1').hide();
+	$('#answer2').hide();
+	$('#answer3').hide();
 
 	//Setting button behaviours for enter key up.
 	$("#query").keyup(function(event){
 		if(event.keyCode == 13){
-		    $("#search-fb").click();
+		   $("#search-fb").click();
 		}
 	});
 });
