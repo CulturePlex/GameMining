@@ -13,9 +13,10 @@
 {% endblock %}
 
 {% block extra_links %}
-    <link href="{{ STATIC_PREFIX }}css/base.css" rel="stylesheet">
+
     <link href="{{ STATIC_PREFIX }}css/bootstrap.css" rel="stylesheet">
     <link href="{{ STATIC_PREFIX }}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_PREFIX }}css/base.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -38,25 +39,31 @@
   <div>
       <div id="one" class="span3 box well">
           <h2>Generate a Quiz about:</h2>
+		  <form>
           <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type something...">
           <button type="button" class="btn" id="search-fb">Search</button>
+		  </form>
+		  <p><i>Add 3 or more concepts of the same type to create a Quiz!</i></p>
       </div>
+	  <!-- First End -->
       <div id="second" class="span3 box well">
 		<div id="search-content">
-          <h2>Select Type:</h2>
+          <h2><div id="select-type-text">Select Type of:</div></h2>
           <select name="type" id="type_select_from">
           </select>
-          <button type="btn" class="btn" id="extract-fb">Extract</button>
+          <button type="btn" class="btn" id="extract-fb">Add</button>
         </div>
 		<div id="search-msg">
           <h2>Loading content...</h2>
         </div>
       </div>
-      <div id="third" class="span3 well" >
+	  <!-- Second End -->
+  </div>
+  <div class="fluid">
+      <div id="third" class="span3 well green" >
 		<div id="play-content">
-		  <h3><div id="content-added">Quiz content: </div></h3>
-          <div id="quizViewer" class="quizViewer">
-          </div>
+          <h4><div id="quizViewer" class="quizViewer">
+          </div></h4>
           <button type="btn" class="button" id="create-quiz-fb">Create Quiz!</button>
           <button type="btn" class="button" id="answer0">Create Quiz!</button>
           <button type="btn" class="button" id="answer1">Create Quiz!</button>
@@ -68,6 +75,11 @@
           <h2>Adding content...</h2>
         </div>
       </div>
-
+	  <!-- Third End -->
+	  <div id="fourth" class="span8 well box blue" >
+		<h3>Quiz content:</h3>
+		<ul id="content-list">
+		</ul>
+      </div>
   </div>
 </body>

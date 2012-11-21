@@ -95,6 +95,8 @@ var GraphExtractor = {
 	else
 	{
     $('#search-content').show();
+	$('#select-type-text').html("Select type of "+GraphExtractor.name+":");
+
     $('#search-msg').hide();
 	}
   },
@@ -142,7 +144,7 @@ var GraphExtractor = {
     var time=1000;
     console.log(result);
     $.each(result, function (k, v) {
-        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp" )
+        if (k !== "name" && k !== "key" && k !== "guid" && k !== "mid" && k !== "id" && k !== "permission" && k !== "timestamp" && k !==  "creator")
         {
           if (v instanceof Array)
           {
@@ -177,11 +179,24 @@ var GraphExtractor = {
           }
         }
     });
-	GraphExtractor.concepts.push(result.name);;
-	$('#content-added').append(result.name+" ");
-    if(GraphExtractor.concepts.length < 3)
+	GraphExtractor.concepts.push({name:result.name,type:GraphExtractor.type});	
+	var maximum = 0;
+	for(var i =0;i< GraphExtractor.concepts.length;i++)
 	{
-		$('#play-msg').html("There is so little information in the system to create a quiz. Add more! Current concepts  in the system:"+ GraphExtractor.concepts+".");
+		var odd = GraphExtractor.concepts.filter(function(val) {
+			return val.type == GraphExtractor.concepts[i].type;
+		});
+		if(odd.length > maximum)
+		{
+			maximum = odd.length;
+			console.log(maximum);
+		}
+	}
+	$("#content-list").append('<li>name:'+result.name+',type:'+GraphExtractor.type+'</li>');
+	console.log(GraphExtractor.concepts);
+    if(maximum < 3)
+	{
+		$('#play-msg').html("There is so little information in the system to create a quiz. Add more concepts of the same type!");
 	}
 	else
 	{

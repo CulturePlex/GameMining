@@ -50,3 +50,15 @@ ul.errorlist + input:focus, ul.errorlist + select:focus, .ul.errorlist + textare
     bottom:19px;
 }
 
+.green {
+    background-color: #d7ffd3
+}
+
+.red {
+    background-color: #FFFACD
+}
+
+.blue {
+    background-color: #CCCCFF
+}
+

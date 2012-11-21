@@ -75,7 +75,7 @@ var QuizConstructor = {
   },
    
   createQuiz: function(graph_type){
-	$('#play-msg').html("Creating Quiz... If this operation take too much time try adding more concepts!");
+	$('#play-msg').html("Creating Quiz... If its taking too much time try adding more concepts!");
 	$('#play-msg').show();
     $('#answer0').hide();
     $('#answer1').hide();
