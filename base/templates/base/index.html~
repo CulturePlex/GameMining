@@ -3,19 +3,21 @@
  {% get_static_prefix as STATIC_PREFIX %}
 {% block extra_scripts %}
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.min.js"></script>
-     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.blockUI.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/chosen.jquery.min.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphManager.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/GraphExtractor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/QuizConstructor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/mining.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/neo4js.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.min.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.forceatlas2.js.js"></script>
 {% endblock %}
 
 {% block extra_links %}
-    <link href="{{ STATIC_PREFIX }}css/base.css" rel="stylesheet">
+
     <link href="{{ STATIC_PREFIX }}css/bootstrap.css" rel="stylesheet">
     <link href="{{ STATIC_PREFIX }}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_PREFIX }}css/base.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -31,35 +33,88 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="#">Game Mining</a>
+		  <ul class="nav">
+		  	<li><a href="javascript:location.reload(true)">New Quiz</a></li>
+		  </ul>
+		  
         </div>
       </div>
   </div>
 
   <div>
       <div id="one" class="span3 box well">
-          <h2>Generate a Quiz about:</h2>
-          <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type some things separated by commas...">
+          <h2><div id="first-title">Type a concept:</div></h2>
+          <input type="text" id="query" class="span3" style="height : 28px" placeholder="Type something...">
           <button type="button" class="btn" id="search-fb">Search</button>
-          </div>
+		  <p><i>Add 3 or more concepts of the same type to create a Quiz!</i></p>
+      </div>
+	  <!-- First End -->
       <div id="second" class="span3 box well">
-          <h2>Select Type:</h2>
+		<div id="search-content">
+          <h2><div id="select-type-text">Select Type of:</div></h2>
           <select name="type" id="type_select_from">
           </select>
-          <button type="btn" class="btn" id="extract-fb">Extract Normal</button>
-          <button type="btn" class="btn" id="extract-rec">Extract Recursively</button>
+          <button type="btn" class="btn" id="extract-fb">Add</button>
+        </div>
+		<div id="search-msg">
+          <h2>Loading content...</h2>
+        </div>
       </div>
+	  <!-- Second End -->
+  </div>
+  <div class="fluid">
       <div id="third" class="span3 well" >
-          <h2>Play!</h2>
-          <div class="quizViewer">
-         </div>
+		<div id="play-content">
+          <h4><div id="quizViewer" class="quizViewer">
+          </div></h4>
           <button type="btn" class="button" id="create-quiz-fb">Create Quiz!</button>
           <button type="btn" class="button" id="answer0">Create Quiz!</button>
           <button type="btn" class="button" id="answer1">Create Quiz!</button>
           <button type="btn" class="button" id="answer2">Create Quiz!</button>
           <button type="btn" class="button" id="answer3">Create Quiz!</button>
-          
-          
+          <div id="time"></div>
+        </div>
+		<div id="play-msg">
+          <h2>Adding content...</h2>
+        </div>
+      </div>
+  <!-- Third End -->
+      <div id="fourth" class="span10 well blue" >
+		<h3>Current Quiz content:</h3>
+		<ul id="content-list">
+		</ul>
+	  <div id="sig" style="display:block;margin-left:auto;margin-right:auto;width:100%;height:250px;border:1px #ccf solid;">
+	  </div>
       </div>
 
+ <!-- Fourth End -->
+      <div id="fifth" class="span8 well red" >
+	<div class="lead"><h3>Quiz content examples:</h3></div>
+	<h4>Visual Artists</h4>
+	<ul id="content-list">
+		<li>name:<b>Rembrandt</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Pablo Picasso</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Banksy</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Leonardo da Vinci</b>,type:/visual_art/visual_artist</li>
+	</ul>
+	<h4>Organism Classification</h4>
+	<ul id="content-list">
+		<li>name:<b>Cat</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Virus</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Lion</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Bacteria</b>,type:/biology/organism_classification</li>
+	</ul>
+	<h4>Sports</h4>
+	<ul id="content-list">
+		<li>name:<b>Football</b>,type:/sports/sport</li>
+		<li>name:<b>Basketball</b>,type:/sports/sport</li>
+		<li>name:<b>Baseball</b>,type:/sports/sport</li>
+		<li>name:<b>Hockey</b>,type:/sports/sport</li>
+	</ul>
+      </div>
   </div>
 </body>
+<script>
+	set();
+	start();
+</script>

@@ -4,6 +4,7 @@ var GraphExtractor = {
   type: "",
   concepts : [],
   rowRequests:[],
+  temp:0,
   search: function () {
     GraphExtractor.name = $('#query')[0].value;
     var array = $('#query')[0].value.split(',');
@@ -140,9 +141,17 @@ var GraphExtractor = {
 
   //*=null
   setGraph: function (result,r) {
+	var added=[];
+	
     if(result)
     {
     var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
+	GraphManager.sigInst.addNode(result.name,{
+	  label: result.name,
+	  color: '#444400',
+	  y:10,
+	  x:10
+	});
     var node;
     var time=1000;
     console.log(result);
@@ -154,15 +163,25 @@ var GraphExtractor = {
             for (var obj in v)
             {
               console.log(k);
-              if(v[obj] != null)
+              if(v[obj] != null && v[obj] != result.name && added.indexOf(v[obj]) == -1)
               {
                 node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
-                console.log(node);
+				GraphManager.sigInst.addNode(v[obj],{
+				  label: v[obj],
+				  color: '#000444',
+				  y:Math.random()*10,
+				  x:Math.random()*10
+
+				});
+                added.push(v[obj]);
                 var rel2 = GraphManager.graph.rel(origin, k , node);
                 rel2.then(function(relationship) {
                   console.log(relationship.getSelf());
                   GraphManager.relationships.push(relationship.getSelf());
                   });
+                  GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v[obj]);
+				  GraphExtractor.temp++;
+
               }
             }
           } else
@@ -171,17 +190,27 @@ var GraphExtractor = {
             {
 
               node = GraphManager.graph.node({ "name" : v , "type" : k});
+			  GraphManager.sigInst.addNode(v,{
+				  label: v,
+				  color: '#000444',
+				  y:Math.random()*10,
+				  x:Math.random()*10
+
+		      });
               console.log(node);
               var rel = GraphManager.graph.rel(origin, k , node);
               rel.then(function(relationship) {
                 console.log(relationship);
                 GraphManager.relationships.push(relationship.getSelf());
                 });
+                GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v);
+				GraphExtractor.temp++;
 
             }
           }
         }
     });
+	GraphManager.sigInst.startForceAtlas2();
 	GraphExtractor.concepts.push({name:result.name,type:GraphExtractor.type});	
 	var maximum = 0;
 	for(var i =0;i< GraphExtractor.concepts.length;i++)

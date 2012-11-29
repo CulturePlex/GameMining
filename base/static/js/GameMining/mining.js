@@ -65,7 +65,7 @@ start = function(){
           } });
           }); 
    */
-
+  GraphManager.initSigma();
   GraphExtractor.init();
   GraphManager.init();
   $("#second").hide();

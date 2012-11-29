@@ -9,6 +9,8 @@
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/QuizConstructor.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/mining.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/neo4js.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.min.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.forceatlas2.js"></script>
 {% endblock %}
 
 {% block extra_links %}
@@ -76,35 +78,39 @@
           <h2>Adding content...</h2>
         </div>
       </div>
-	  <!-- Third End -->
-	  <div id="fourth" class="span8 well blue" >
+  <!-- Third End -->
+      <div id="fourth" class="span10 well blue" >
 		<h3>Current Quiz content:</h3>
 		<ul id="content-list">
 		</ul>
+	  <div id="sig" style="display:block;margin-left:auto;margin-right:auto;width:100%;height:250px;border:1px #ccf solid;">
+	  </div>
       </div>
-	  <div id="fifth" class="span8 well red" >
-		<div class="lead"><h3>Quiz content examples:</h3></div>
-		<h4>Visual Artists</h4>
-		<ul id="content-list">
-			<li>name:<b>Rembrandt</b>,type:/visual_art/visual_artist</li>
-			<li>name:<b>Pablo Picasso</b>,type:/visual_art/visual_artist</li>
-			<li>name:<b>Banksy</b>,type:/visual_art/visual_artist</li>
-			<li>name:<b>Leonardo da Vinci</b>,type:/visual_art/visual_artist</li>
-		</ul>
-		<h4>Organism Classification</h4>
-		<ul id="content-list">
-			<li>name:<b>Cat</b>,type:/biology/organism_classification</li>
-			<li>name:<b>Virus</b>,type:/biology/organism_classification</li>
-			<li>name:<b>Lion</b>,type:/biology/organism_classification</li>
-			<li>name:<b>Bacteria</b>,type:/biology/organism_classification</li>
-		</ul>
-		<h4>Sports</h4>
-		<ul id="content-list">
-			<li>name:<b>Football</b>,type:/sports/sport</li>
-			<li>name:<b>Basketball</b>,type:/sports/sport</li>
-			<li>name:<b>Baseball</b>,type:/sports/sport</li>
-			<li>name:<b>Hockey</b>,type:/sports/sport</li>
-		</ul>
+
+ <!-- Fourth End -->
+      <div id="fifth" class="span8 well red" >
+	<div class="lead"><h3>Quiz content examples:</h3></div>
+	<h4>Visual Artists</h4>
+	<ul id="content-list">
+		<li>name:<b>Rembrandt</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Pablo Picasso</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Banksy</b>,type:/visual_art/visual_artist</li>
+		<li>name:<b>Leonardo da Vinci</b>,type:/visual_art/visual_artist</li>
+	</ul>
+	<h4>Organism Classification</h4>
+	<ul id="content-list">
+		<li>name:<b>Cat</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Virus</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Lion</b>,type:/biology/organism_classification</li>
+		<li>name:<b>Bacteria</b>,type:/biology/organism_classification</li>
+	</ul>
+	<h4>Sports</h4>
+	<ul id="content-list">
+		<li>name:<b>Football</b>,type:/sports/sport</li>
+		<li>name:<b>Basketball</b>,type:/sports/sport</li>
+		<li>name:<b>Baseball</b>,type:/sports/sport</li>
+		<li>name:<b>Hockey</b>,type:/sports/sport</li>
+	</ul>
       </div>
   </div>
 </body>
