@@ -179,7 +179,7 @@ var GraphExtractor = {
                   console.log(relationship.getSelf());
                   GraphManager.relationships.push(relationship.getSelf());
                   });
-                  GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v[obj]);
+				  GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v[obj]).draw();
 				  GraphExtractor.temp++;
 
               }
@@ -203,7 +203,8 @@ var GraphExtractor = {
                 console.log(relationship);
                 GraphManager.relationships.push(relationship.getSelf());
                 });
-                GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v);
+				
+                GraphManager.sigInst.addEdge(GraphExtractor.temp,result.name,v).draw();
 				GraphExtractor.temp++;
 
             }
@@ -211,6 +212,7 @@ var GraphExtractor = {
         }
     });
 	GraphManager.sigInst.startForceAtlas2();
+	GraphManage.isRunning=true;
 	GraphExtractor.concepts.push({name:result.name,type:GraphExtractor.type});	
 	var maximum = 0;
 	for(var i =0;i< GraphExtractor.concepts.length;i++)

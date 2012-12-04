@@ -33,6 +33,10 @@ $('#search-fb').click(function(){
 		QuizConstructor.createQuiz("FREEBASE_GRAPH")
     });
 
+	$('#showEdges').click(function(){
+	  QuizConstructor.checkAnswer(0);
+	});
+
 	$('#answer0').click(function(){
 	  QuizConstructor.checkAnswer(0);
 	});
@@ -65,7 +69,7 @@ start = function(){
           } });
           }); 
    */
-  GraphManager.initsigma();
+  GraphManager.initSigma();
   GraphExtractor.init();
   GraphManager.init();
   $("#second").hide();

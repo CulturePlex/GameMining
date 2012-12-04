@@ -33,6 +33,10 @@ $('#search-fb').click(function(){
 		QuizConstructor.createQuiz("FREEBASE_GRAPH")
     });
 
+	$('#showEdges').click(function(){
+	  GraphManager.manageShowEdges();
+	});
+
 	$('#answer0').click(function(){
 	  QuizConstructor.checkAnswer(0);
 	});

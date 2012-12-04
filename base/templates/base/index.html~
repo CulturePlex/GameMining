@@ -10,7 +10,7 @@
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/GameMining/mining.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/neo4js.js"></script>
      <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.min.js"></script>
-     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.forceatlas2.js.js"></script>
+     <script type="text/javascript" src="{{ STATIC_PREFIX }}js/sigma.forceatlas2.js"></script>
 {% endblock %}
 
 {% block extra_links %}

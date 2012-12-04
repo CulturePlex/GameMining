@@ -4,7 +4,9 @@ var GraphManager = {
   HOST: null,
   relationships:[],
   sigInst : null,
+  isRunning:null,
   init: function () {
+	GraphManager.isRunning=false;
     GraphManager.relationships=[];
     console.log('initing..');
     GraphManager.graph = new neo4j.GraphDatabase("http://localhost:7474/");
@@ -23,9 +25,7 @@ var GraphManager = {
 			labelThreshold: 0,
 		  }).graphProperties({
 			minNodeSize: 1,
-			maxNodeSize: 15,
-			minEdgeSize: 1,
-			maxEdgeSize: 11
+			maxNodeSize: 5
 		  }).mouseProperties({
 			maxRatio: 10,
 		  });
@@ -44,6 +44,19 @@ var GraphManager = {
 			}
 		}
 		GraphManager.sigInst.draw();*/
- 	}
+ 	},
+	manageShowEdges: function() {
+		if(GraphManager.isRunning)
+		{
+			GraphManager.sigmaInst.stopForceAtlas2();
+	    	GraphManage.isRunning=false;
+		}
+		else
+		{	
+			GraphManager.sigmaInst.startForceAtlas2();
+			GraphManage.isRunning=true;
+		}
+	}
+
 };
 
