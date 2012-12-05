@@ -5,6 +5,7 @@ var GraphExtractor = {
   concepts : [],
   rowRequests:[],
   temp:0,
+  added:[],
   search: function () {
     GraphExtractor.name = $('#query')[0].value;
     var array = $('#query')[0].value.split(',');
@@ -141,8 +142,6 @@ var GraphExtractor = {
 
   //*=null
   setGraph: function (result,r) {
-	var added=[];
-	
     if(result)
     {
     var origin = GraphManager.graph.node({ "name" : result.name , "type" : GraphExtractor.type});
@@ -152,6 +151,7 @@ var GraphExtractor = {
 	  y:10,
 	  x:10
 	});
+	GraphExtractor.added.push(result.name);
     var node;
     var time=1000;
     console.log(result);
@@ -163,7 +163,7 @@ var GraphExtractor = {
             for (var obj in v)
             {
               console.log(k);
-              if(v[obj] != null && v[obj] != result.name && added.indexOf(v[obj]) == -1)
+              if(v[obj] != null && v[obj] != result.name && GraphExtractor.added.indexOf(v[obj]) == -1)
               {
                 node = GraphManager.graph.node({ "name" : v[obj] , "type" : k});
 				GraphManager.sigInst.addNode(v[obj],{
@@ -173,7 +173,7 @@ var GraphExtractor = {
 				  x:Math.random()*10
 
 				});
-                added.push(v[obj]);
+                GraphExtractor.added.push(v[obj]);
                 var rel2 = GraphManager.graph.rel(origin, k , node);
                 rel2.then(function(relationship) {
                   console.log(relationship.getSelf());
@@ -186,18 +186,23 @@ var GraphExtractor = {
             }
           } else
           {
-            if (v != null)
+            if (v != null )
             {
+			  console.log(GraphExtractor.added);
+			  if(GraphExtractor.added.indexOf(v) == -1)
+			  {
 
-              node = GraphManager.graph.node({ "name" : v , "type" : k});
-			  GraphManager.sigInst.addNode(v,{
-				  label: v,
-				  color: '#000444',
-				  y:Math.random()*10,
-				  x:Math.random()*10
+		          node = GraphManager.graph.node({ "name" : v , "type" : k});
+				  GraphManager.sigInst.addNode(v,{
+					  label: v,
+					  color: '#000444',
+					  y:Math.random()*10,
+					  x:Math.random()*10
 
-		      });
-              console.log(node);
+				  });
+		          console.log(node);
+				  GraphExtractor.added.push(v);
+			  }
               var rel = GraphManager.graph.rel(origin, k , node);
               rel.then(function(relationship) {
                 console.log(relationship);
@@ -212,7 +217,7 @@ var GraphExtractor = {
         }
     });
 	GraphManager.sigInst.startForceAtlas2();
-	GraphManage.isRunning=false;
+	GraphManager.isRunning=true;
 	GraphExtractor.concepts.push({name:result.name,type:GraphExtractor.type});	
 	var maximum = 0;
 	for(var i =0;i< GraphExtractor.concepts.length;i++)

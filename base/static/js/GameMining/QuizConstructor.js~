@@ -12,6 +12,8 @@ var QuizConstructor = {
   treshold: 100,
   bigJson: null,
   answerIndex: null,
+  infoLeaf:null,
+  infoEdge:null,
     
   contains: function(a, obj) {
     for (var i = 0; i < a.length; i++) {
@@ -29,19 +31,16 @@ var QuizConstructor = {
          url: jumpingTemp,
          success: function(response){
 
-             console.log(QuizConstructor.attrib);
              if (response.type === QuizConstructor.attrib && QuizConstructor.counter < QuizConstructor.treshold)
              {
               jQuery.ajax({
                  url: response.start,
                  success: function(response){
-                    console.log(QuizConstructor.contains(QuizConstructor.answers,response.data.name));
                     if(!QuizConstructor.contains(QuizConstructor.answers,response.data.name) && response.data.name != QuizConstructor.correct )
                     {
                       QuizConstructor.answers[QuizConstructor.answerIndex] = response.data.name;
                       if(QuizConstructor.answerIndex < QuizConstructor.choices - 1)
                       {
-                          console.log(response);
                           QuizConstructor.answerIndex++;
                           QuizConstructor.getAnswer(QuizConstructor.answerIndex);
                       }else
@@ -78,35 +77,41 @@ var QuizConstructor = {
   },
    
   createQuiz: function(graph_type){
+	$('#play-msg').html("Creating Quiz... If its taking too much time try adding more concepts!");
+	$('#play-msg').show();
     $('#answer0').hide();
     $('#answer1').hide();
     $('#answer2').hide();
     $('#answer3').hide();
+	$('#quizViewer').empty();
+
     QuizConstructor.answers = [];
     var jumping = GraphManager.relationships[Math.floor(Math.random()*GraphManager.relationships.length)];
     jQuery.ajax({
       url: jumping,
-      success: function(response){
-      console.log(response);
-      QuizConstructor.relationship = response;
+      success: function(response1){
+	  //response1 = JSON.parse(response1);
+      QuizConstructor.relationship = response1;
       QuizConstructor.answers=[];
       //Adding question and correct answer
       QuizConstructor.attrib = QuizConstructor.relationship.type;
       
       jQuery.ajax({
         url: QuizConstructor.relationship.end,
-        success: function(response){
-          QuizConstructor.end = response;
+        success: function(response2){
+			console.log(response2);
+		  //response2 = JSON.parse(response2);
+          QuizConstructor.end = response2;
           QuizConstructor.answers=[];
           
           QuizConstructor.value = QuizConstructor.end.data.name;
           jQuery.ajax({
             url: QuizConstructor.relationship.start,
-            success: function(response){
-              QuizConstructor.start = response;
+            success: function(response3){
+			  //response3 = JSON.parse(response3);
+              QuizConstructor.start = response3;
               QuizConstructor.correct = QuizConstructor.start.data.name;
               QuizConstructor.counter = 0;
-              console.log(QuizConstructor.correct);
               QuizConstructor.answers[0] = QuizConstructor.correct;
               //Adding incorrect answers
               QuizConstructor.answerIndex=0;
@@ -140,98 +145,130 @@ var QuizConstructor = {
       }
   },
   setQuiz: function(graph_type){
-              if(graph_type == "FREEBASE_GRAPH")
-              {
-                  var question = 'Which of the followings has <em>' + QuizConstructor.value +'</em> as ' + QuizConstructor.attrib.replaceAll("_"," ") +'?';
-              }
-              if(graph_type == "CULTUREPLEX_GRAPH")
-              {
-                  var question = 'Which of the following is <em>' + attrib + '</em> ' + value +'?';
-              }
-              var quiz = '<h>' + question + '</h2>';
-              
-              //Deleting duplicated answers
-              var j = 0;
-              while ( j < QuizConstructor.answers.length )
-              {
-                  if ($.inArray(QuizConstructor.answers[j], QuizConstructor.answers)!== j)
-                  {
-                      QuizConstructor.answers.splice(j,2);
-                      console.log('repetido');
-                  }
-                  if (QuizConstructor.answers[j]==undefined)
-                  {
-                      QuizConstructor.answers.splice(j,2);
-                      console.log('repetido');
-                  }
-                  j++;
-              }
-              console.log(QuizConstructor.answers);
-              //If there is only one, restart quiz
-              if(QuizConstructor.answers.length<2 || QuizConstructor.contains(QuizConstructor.answers,undefined))
-              {
-                  QuizConstructor.createQuiz(graph_type);
-              }
-              else
-              {
-                
-                //Mixing answers
-                var answersmixed = [];
-                j = 0;
-                while ( j < QuizConstructor.answers.length )
-                {
-                    var r = parseInt(Math.random(10)*QuizConstructor.answers.length);
-                    if ( typeof(answersmixed[r] ) === "undefined")
-                    {
-                        answersmixed[r] = QuizConstructor.answers[j];
-                        j++;
-                    }
-                }
-                for (var i = 0 ; i < 4; i++)
-                {
-                    $('#answer'+i).removeClass("btn-success");
-                    $('#answer'+i).removeClass("btn-danger");
-                    
-                    $('#answer'+i).hide();
-                }
-                $('#answer0').hide();
-                $('#answer1').hide();
-                $('#answer2').hide();
-                $('#answer3').hide();
-                for (var i = 0 ; i < QuizConstructor.answers.length; i++)
-                {
-                    $('#answer'+i).html(answersmixed[i]);
-                    $('#answer'+i).show();
-                }
-                
-                if($('#answer1').html=="Create Quiz!"){$('#answer1').hide();}
-                if($('#answer0').html=="Create Quiz!"){$('#answer0').hide();}
-                if($('#answer2').html=="Create Quiz!"){$('#answer2').hide();}
-                if($('#answer3').html=="Create Quiz!"){$('#answer3').hide();}
+    $('.results').hide();
+	console.log(QuizConstructor.value);
+	WIKIPEDIA.getData('http://en.wikipedia.org/wiki/'+QuizConstructor.value,
+		function (result){
 
-                //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
-                $('.quizViewer').empty();
-                $('.quizViewer').append(quiz);
-                $.unblockUI();
-              }
+			QuizConstructor.infoLeaf = result;
+		    QuizConstructor.leafHtml = "<a href='#' id='leafLink'>"+QuizConstructor.value+"</a>";
+
+			QuizConstructor.edgeHtml = QuizConstructor.attrib.replaceAll("_"," ");
+			finishQuiz();
+		},
+		function (){
+			QuizConstructor.infoLeaf = "error";
+			QuizConstructor.edgeHtml = QuizConstructor.attrib.replaceAll("_"," ");
+		    QuizConstructor.leafHtml = QuizConstructor.value;
+			finishQuiz();
+			console.log('error!');
+
+
+
+		}
+	  );				
+	  finishQuiz= function () {
+
+      $('#play-msg').hide();
+
+      if(graph_type == "FREEBASE_GRAPH")
+      {
+          var question = 'Which of the followings has <em>' + QuizConstructor.leafHtml +'</em> as ' + QuizConstructor.edgeHtml +'?';
+      }
+      if(graph_type == "CULTUREPLEX_GRAPH")
+      {
+          var question = 'Which of the followings has <em>' + QuizConstructor.leafHtml +'</em> as ' + QuizConstructor.edgeHtml +'?';
+      }
+      var quiz = '<h>' + question + '</h2>';
+      
+      //Deleting duplicated answers
+      var j = 0;
+      while ( j < QuizConstructor.answers.length )
+      {
+          if ($.inArray(QuizConstructor.answers[j], QuizConstructor.answers)!== j)
+          {
+              QuizConstructor.answers.splice(j,2);
+              console.log('repetido');
+          }
+          if (QuizConstructor.answers[j]==undefined)
+          {
+              QuizConstructor.answers.splice(j,2);
+              console.log('repetido');
+          }
+          j++;
+      }
+      console.log(QuizConstructor.answers);
+      //If there is only one, restart quiz
+      if(QuizConstructor.answers.length<2 || QuizConstructor.contains(QuizConstructor.answers,undefined))
+      {
+          QuizConstructor.createQuiz(graph_type);
+      }
+      else
+      {
+        
+        //Mixing answers
+        var answersmixed = [];
+        j = 0;
+        while ( j < QuizConstructor.answers.length )
+        {
+            var r = parseInt(Math.random(10)*QuizConstructor.answers.length);
+            if ( typeof(answersmixed[r] ) === "undefined")
+            {
+                answersmixed[r] = QuizConstructor.answers[j];
+                j++;
+            }
+        }
+        for (var i = 0 ; i < 4; i++)
+        {
+            $('#answer'+i).removeClass("btn-success");
+            $('#answer'+i).removeClass("btn-danger");
+            
+            $('#answer'+i).hide();
+        }
+        $('#answer0').hide();
+        $('#answer1').hide();
+        $('#answer2').hide();
+        $('#answer3').hide();
+        for (var i = 0 ; i < QuizConstructor.answers.length; i++)
+        {
+            $('#answer'+i).html(answersmixed[i]);
+            $('#answer'+i).show();
+        }
+        
+        if($('#answer1').html=="Create Quiz!"){$('#answer1').hide();}
+        if($('#answer0').html=="Create Quiz!"){$('#answer0').hide();}
+        if($('#answer2').html=="Create Quiz!"){$('#answer2').hide();}
+        if($('#answer3').html=="Create Quiz!"){$('#answer3').hide();}
+
+        //quiz += '<div>' + 'Correct Answer :' + QuizConstructor.correct + '</div>';
+        $('.quizViewer').empty();
+        $('.quizViewer').append(quiz);
+		$("a#leafLink").click(function(){
+			InfoManager.display(QuizConstructor.infoLeaf);
+		});
+        //$.unblockUI();
+      }
+  	};
   },
   checkAnswer: function(i) {
+    console.log($('#quizViewer'));
     console.log(QuizConstructor.correct);
     console.log($('#answer'+i).html());
     if($('#answer'+i).html() === QuizConstructor.correct)
     {
         $('#answer'+i).addClass("btn-success");
+		$("#time").html("Correct Answer!");
     }
     else
     {
+		$("#time").html("Wrong Answer!");
         $('#answer'+i).addClass("btn-danger");
     }
     setTimeout(function(){
+		$("#time").empty();
         QuizConstructor.createQuiz();
-    },100);
+    },1000);
 
-
-  
   }
 }
 
