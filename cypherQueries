@@ -1,0 +1,53 @@
+TODOS LOS NODOS:
+START n=node(*) RETURN n;
+
+OBRTENIENDO NODO POR PROPIEDAD
+START a=node(*)
+WHERE as (a.PROPERTY) and a.PROPERTY? = "PROPERTYVALUE"
+RETURN a
+
+OBTENIENDO PROPIEDAD DE NODO
+START a=node(*)
+WHERE has (a.NodeTypeS) and a.NodeTypeS? = "Familia Elaboracion"
+RETURN a.IDX
+
+CREANDO UNA RELACION
+START a=node(*), b=node(*)
+WHERE has(a.IDX) and a.IDX? = "ADAPTACIÓN" and has(b.IDX) and b.IDX? = "ADAPTACIÓN" 
+CREATE a-[r:RELTYPE]->b
+RETURN r
+
+OBTENIENDO DOS NODOS Y UNA ARISTA
+start n=node(34)
+match n-[r]-m
+return n as n,r,m
+
+OBTENIENDO CAMINO
+start n=node(34)
+match n-[r]-m-[q]-l
+return n as n,r,m,q,l
+
+OBTENIENDO TRAVERSAL
+start n=node(*)
+match n-[r]-m-[q]-l
+where has(n.NodeTypeS) 
+and n.NodeTypeS? = "Familia Elaboracion" 
+and has(m.NodeTypeS) 
+and m.NodeTypeS? = "Elaboracion" 
+and has(l.NodeTypeS) 
+and l.NodeTypeS? = "Mundo"
+return n as n,r,m,q,l
+
+
+OTENIENDO TRAVERSAL FAMILIA-MUNDO
+(DB:TRAVERSAL)
+traversal = 'start n=node(*) match n-[r]-m-[q]-l where has(n.NodeTypeS) and n.NodeTypeS? = "Familia Elaboracion" and has(m.NodeTypeS) and m.NodeTypeS? = "Elaboracion" and has(l.NodeTypeS) and l.NodeTypeS? = "Mundo" return n.IDX,l.IDX'
+
+traversalCount = 'start n=node(*) match n-[r]-m-[q]-l where has(n.NodeTypeS) and n.NodeTypeS? = "Familia Elaboracion" and has(m.NodeTypeS) and m.NodeTypeS? = "Elaboracion" and has(l.NodeTypeS) and l.NodeTypeS? = "Mundo" return count(*)'
+
+OBTENIENDO TRAVERSAL AÑO-TEMPERATURA
+(DB:TRAVERSAL-2)
+traversal = 'start n=node(*) match n-[r]-m-[q]-l where has(n.NodeTypeS) and n.NodeTypeS? = "Año" and has(m.NodeTypeS) and m.NodeTypeS? = "Receta" and has(l.NodeTypeS) and l.NodeTypeS? = "Temperatura" return n.IDX,l.IDX'
+
+traversalCount = 'start n=node(*) match n-[r]-m-[q]-l where has(n.NodeTypeS) and n.NodeTypeS? = "Año" and has(m.NodeTypeS) and m.NodeTypeS? = "Receta" and has(l.NodeTypeS) and l.NodeTypeS? = "Temperatura" return count(*)'
+

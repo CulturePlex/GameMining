@@ -1,0 +1,1 @@
+ingrediente es un sring o una lista de nodos?
